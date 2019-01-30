@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def showIndex():
-	return "you are at index"
+	return render_template('index.html')
 
 
 @app.route('/students')
@@ -123,6 +123,10 @@ def deleteStudentPayments(studentId, paymentsId):
 	else:
 		return "Do delete payment ID " + str(paymentsId) + " for Student ID " + str(studentId)
 
+
+@app.route('/cv')
+def getCV():
+	return render_template('cv.html')
 
 if __name__ == '__main__':
 	app.debug = True
