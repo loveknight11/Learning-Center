@@ -6,13 +6,14 @@ from sqlalchemy.pool import StaticPool
 from passlib.apps import custom_app_context as pwd_context
 import random
 import string
+import datetime
 
 Base = declarative_base()
-secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
 
 class Students(Base):
-	__tablename__ = 'students'
-	id = Column(Integer, primary_key=True)
+    __tablename__ = 'students'
+    id = Column(Integer, primary_key=True)
     name = Column(String)
     mobile = Column(String)
     email = Column(String)
@@ -22,8 +23,8 @@ class Students(Base):
 
 
 class Parents(Base):
-	__tablename__ = 'parents'
-	id = Column(Integer, primary_key=True)
+    __tablename__ = 'parents'
+    id = Column(Integer, primary_key=True)
     name = Column(String)
     mobile = Column(String)
     address = Column(String)
@@ -32,14 +33,13 @@ class Parents(Base):
     notes = Column(String)
 
 
-
 class Grades(Base):
-	__tablename__ = 'grades'
-	id = Column(Integer, primary_key=True)
-	student_id = Column(Integer, ForeignKey('students.id'))
-	grade = Column(String)
-	date = Column(DateTime, default=func.now())
-	notes = Column(String)
+    __tablename__ = 'grades'
+    id = Column(Integer, primary_key=True)
+    student_id = Column(Integer, ForeignKey('students.id'))
+    grade = Column(String)
+    date = Column(DateTime, default=datetime.datetime.now)
+    notes = Column(String)
 
 
 class Notes(Base):
@@ -47,7 +47,7 @@ class Notes(Base):
     id = Column(Integer, primary_key=True)
     student_id = Column(Integer, ForeignKey('students.id'))
     note = Column(String)
-    date = Column(DateTime, default=func.now())
+    date = Column(DateTime, default=datetime.datetime.now)
     notes = Column(String)
 
 
@@ -56,7 +56,7 @@ class Payments(Base):
     id = Column(Integer, primary_key=True)
     student_id = Column(Integer, ForeignKey('students.id'))
     payment = Column(String)
-    date = Column(DateTime, default=func.now())
+    date = Column(DateTime, default=datetime.datetime.now)
     notes = Column(String)
 
 
