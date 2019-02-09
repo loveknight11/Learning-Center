@@ -1,0 +1,9 @@
+{% extends "main.html" %}
+{% include "header.html" %}
+
+{% block content %}
+	{% for parent in parents %}
+		<h3>{{parent.name}}</h3>
+	{% endfor %}
+
+{% endblock %}

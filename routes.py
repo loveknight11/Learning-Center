@@ -1,6 +1,18 @@
 from flask import *
+from sqlalchemy import *
+from database import Base, Students, Parents, Grades, Notes, Payments
+from sqlalchemy.orm import sessionmaker
+import random, string
 
 app = Flask(__name__)
+engine = create_engine('sqlite:///db.db',
+                       connect_args={'check_same_thread': False})
+Base.metadata.bind = engine
+
+DBSession = sessionmaker(bind=engine)
+session = DBSession()
+
+secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
 
 
 @app.route('/')
@@ -16,7 +28,7 @@ def showStudents():
 @app.route('/students/new', methods=['GET', 'POST'])
 def newStudent():
 	if request.method == 'GET':
-		return "New Student"
+		return render_template('newstudent.html')
 	else :
 		return "Do New Student"
 
@@ -124,10 +136,42 @@ def deleteStudentPayments(studentId, paymentsId):
 		return "Do delete payment ID " + str(paymentsId) + " for Student ID " + str(studentId)
 
 
+@app.route('/parents/new', methods=['GET', 'POST'])
+def newParent():
+	if request.method == 'GET':
+		return render_template('newparent.html')
+	else :
+		if request.form['submit'] == 'save':
+			name = request.form.get('name')
+			mobile = request.form.get('mobile')
+			address = request.form.get('address')
+			job = request.form.get('job')
+			email = request.form.get('email')
+			notes = request.form.get('notes')
+			newParent = Parents(name = name,
+				mobile = mobile,
+				address = address,
+				job = job,
+				email = email,
+				notes = notes)
+			session.add(newParent)
+			session.commit()
+			flash('Parent Added Successfully')
+			return redirect(url_for('showIndex'))
+		else :
+			return redirect(url_for('showIndex'))
+
+
+@app.route('/parents')
+def showAllParents():
+	parents = session.query(Parents).all()
+	return render_template('allparents.html', parents = parents)
+
 @app.route('/cv')
 def getCV():
 	return render_template('cv.html')
 
 if __name__ == '__main__':
 	app.debug = True
+	app.secret_key = secret_key
 	app.run(host='0.0.0.0', port='5000')

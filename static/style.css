@@ -29,3 +29,18 @@ body{
 .text-white{
 	color: white;
 }
+
+.input-form{
+	width: 500px;
+	text-align: center;
+	margin: auto;
+	padding-top: 40px;
+}
+
+.form-control{
+	background-color: linen;
+}
+
+.flashes{
+	color: red;
+}
