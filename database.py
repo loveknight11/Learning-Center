@@ -40,3 +40,25 @@ class Grades(Base):
 	grade = Column(String)
 	date = Column(DateTime, default=func.now())
 	notes = Column(String)
+
+
+class Notes(Base):
+    __tablename__ = 'notes'
+    id = Column(Integer, primary_key=True)
+    student_id = Column(Integer, ForeignKey('students.id'))
+    note = Column(String)
+    date = Column(DateTime, default=func.now())
+    notes = Column(String)
+
+
+class Payments(Base):
+    __tablename__ = 'payments'
+    id = Column(Integer, primary_key=True)
+    student_id = Column(Integer, ForeignKey('students.id'))
+    payment = Column(String)
+    date = Column(DateTime, default=func.now())
+    notes = Column(String)
+
+
+engine = create_engine('sqlite:///db.db', connect_args={'check_same_thread': False}, poolclass=StaticPool)
+Base.metadata.create_all(engine)
