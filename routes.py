@@ -1,3 +1,4 @@
+import sys
 from flask import *
 from sqlalchemy import *
 from database import Base, Students, Parents, Grades, Notes, Payments
@@ -29,7 +30,7 @@ def showStudents():
 def newStudent():
 	if request.method == 'GET':
 		parents = session.query(Parents).all()
-		return render_template('newstudent.html', Parents=parents)
+		return render_template('newstudent.html', parents=parents)
 	else :
 		return "Do New Student"
 
