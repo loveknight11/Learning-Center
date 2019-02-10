@@ -173,6 +173,8 @@ def showAllParents():
 def getCV():
 	return render_template('cv.html')
 
+
+
 if __name__ == '__main__':
 	app.debug = True
 	app.secret_key = secret_key

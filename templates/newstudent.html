@@ -24,19 +24,21 @@
 			</div>
 			<div class="form-group">
 				<label for="father">Father</label>
-				<select name="father" class="form-group">
+				<input type="text" class="form-control" id="father" autocomplete="on" list="father-list">
+				<datalist id="father-list">
 					{% for parent in parents %}
-						<option value="{{parent.name}}">{{parent.name}}</option>
+						<option>{{parent.name}}</option>
 					{% endfor %}
-				</select>
+				</datalist>
 			</div>
 			<div class="form-group">
 				<label for="mother">Mother</label>
-				<select name="mother">
-						{% for parent in parents %}
-							<option value="{{parent.name}}">{{parent.name}}</option>
-						{% endfor %}
-					</select>
+				<input type="text" class="form-control" id="mother" autocomplete="on" list="mother-list">
+				<datalist id="mother-list">
+					{% for parent in parents %}
+						<option>{{parent.name}}</option>
+					{% endfor %}
+				</datalist>
 			</div>
 			<button type="submit" class="btn btn-primary" name="submit" value="save">Save</button>
 			<button type="submit" class="btn btn-secondary" name="submit" value="cancel">Cancel</button>
