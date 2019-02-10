@@ -2,5 +2,45 @@
 {% include "header.html" %}
 
 {% block content %}
-	<div>Add New Student</div>
+
+
+	<div class="input-form">
+		<form method="post">
+			<div class="form-group">
+				<label for="name">Name</label>
+				<input class="form-control" type="text" name="name" id="name">
+			</div>
+			<div class="form-group">
+				<label for="mobile">Mobile</label>
+				<input class="form-control" type="text" name="mobile" id="mobile">
+			</div>
+			<div class="form-group">
+				<label for="email">E-mail</label>
+				<input class="form-control" type="email" name="email" id="email">
+			</div>
+			<div class="form-group">
+				<label for="notes">Notes</label>
+				<textarea class="form-control" name="notes" id="notes" rows="3"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="father">Father</label>
+				<select name="father">
+					{% for parent in parents %}
+						console.log({{parent.name}})
+						<option value="{{parent.id}}">{{parent.name}}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="form-group">
+				<label for="mother">Mother</label>
+				<select name="mother">
+						{% for parent in parents %}
+							<option value="{{parent.id}}">{{parent.name}}</option>
+						{% endfor %}
+					</select>
+			</div>
+			<button type="submit" class="btn btn-primary" name="submit" value="save">Save</button>
+			<button type="submit" class="btn btn-secondary" name="submit" value="cancel">Cancel</button>
+		</form>
+	</div>
 {% endblock %}
