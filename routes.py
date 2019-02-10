@@ -29,8 +29,9 @@ def showStudents():
 @app.route('/students/new', methods=['GET', 'POST'])
 def newStudent():
 	if request.method == 'GET':
-		parents = session.query(Parents).all()
-		return render_template('newstudent.html', parents=parents)
+		fathers = session.query(Parents).filter_by(sex='Male').all()
+		mothers = session.query(Parents).filter_by(sex='Female').all()
+		return render_template('newstudent.html', fathers=fathers, mothers=mothers)
 	else :
 		return "Do New Student"
 
