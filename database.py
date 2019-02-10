@@ -31,6 +31,7 @@ class Parents(Base):
     job = Column(String)
     email = Column(String)
     notes = Column(String)
+    sex = Column(String)
 
 
 class Grades(Base):
