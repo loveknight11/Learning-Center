@@ -145,12 +145,14 @@ def newParent():
 	else :
 		if request.form['submit'] == 'save':
 			name = request.form.get('name')
+			sex = request.form.get('sex')
 			mobile = request.form.get('mobile')
 			address = request.form.get('address')
 			job = request.form.get('job')
 			email = request.form.get('email')
 			notes = request.form.get('notes')
 			newParent = Parents(name = name,
+				sex = sex,
 				mobile = mobile,
 				address = address,
 				job = job,
