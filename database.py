@@ -18,8 +18,8 @@ class Students(Base):
     mobile = Column(String)
     email = Column(String)
     notes = Column(String)
-    father_id = Column(Integer, ForeignKey('parents.id'))
-    mother_id = Column(Integer, ForeignKey('parents.id'))
+    father = Column(Integer, ForeignKey('parents.name'))
+    mother = Column(Integer, ForeignKey('parents.name'))
 
 
 class Parents(Base):

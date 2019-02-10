@@ -33,7 +33,24 @@ def newStudent():
 		mothers = session.query(Parents).filter_by(sex='Female').all()
 		return render_template('newstudent.html', fathers=fathers, mothers=mothers)
 	else :
-		return "Do New Student"
+		name = request.form.get('name')
+		mobile = request.form.get('mobile')
+		email = request.form.get('email')
+		notes = request.form.get('notes')
+		father = request.form.get('father')
+		mother = request.form.get('mother')
+
+		newStudent = Students(name = name,
+			mobile = mobile,
+			email = email,
+			notes = notes,
+			father = father,
+			mother = mother)
+		session.add(newStudent)
+		session.commit()
+		flash("Student added")
+		return redirect(url_for('showIndex'))
+
 
 
 @app.route('/students/<int:studentId>/edit', methods=['GET', 'POST'])

@@ -27,7 +27,7 @@
 				<input type="text" class="form-control" id="father" autocomplete="off" list="father-list">
 				<datalist id="father-list">
 					{% for parent in fathers %}
-						<option>{{parent.name}}</option>
+						<option value="{{parent.name}}">{{parent.name}}</option>
 					{% endfor %}
 				</datalist>
 			</div>
@@ -36,7 +36,7 @@
 				<input type="text" class="form-control" id="mother" autocomplete="off" list="mother-list">
 				<datalist id="mother-list">
 					{% for parent in mothers %}
-						<option>{{parent.name}}</option>
+						<option value="{{parent.name}}">{{parent.name}}</option>
 					{% endfor %}
 				</datalist>
 			</div>
