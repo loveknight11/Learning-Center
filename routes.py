@@ -39,7 +39,9 @@ def newStudent():
 		email = request.form.get('email')
 		notes = request.form.get('notes')
 		father = request.form.get('father')
+		print("father = " + father)
 		mother = request.form.get('mother')
+		print("mother = " + mother)
 
 		newStudent = Students(name = name,
 			mobile = mobile,
