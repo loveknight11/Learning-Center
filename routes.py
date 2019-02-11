@@ -23,7 +23,8 @@ def showIndex():
 
 @app.route('/students')
 def showStudents():
-	return "All Students"
+	students = session.query(Students).all()
+	return render_template('allstudents.html', students=students)
 
 
 @app.route('/students/new', methods=['GET', 'POST'])
