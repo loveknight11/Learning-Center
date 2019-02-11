@@ -29,9 +29,9 @@ def showStudents():
 
 @app.route('/students/new', methods=['GET', 'POST'])
 def newStudent():
+	fathers = session.query(Parents).filter_by(sex='Male').all()
+	mothers = session.query(Parents).filter_by(sex='Female').all()
 	if request.method == 'GET':
-		fathers = session.query(Parents).filter_by(sex='Male').all()
-		mothers = session.query(Parents).filter_by(sex='Female').all()
 		return render_template('newstudent.html', fathers=fathers, mothers=mothers)
 	else :
 		name = request.form.get('name')
@@ -39,9 +39,31 @@ def newStudent():
 		email = request.form.get('email')
 		notes = request.form.get('notes')
 		father = request.form.get('father')
-		print("father = " + father)
 		mother = request.form.get('mother')
-		print("mother = " + mother)
+		# check for father and mother in database
+		chk = False
+		for f in fathers:
+			if f.name == father:
+				chk = True
+		if not chk:
+			flash("father is not in our database, please add his info")
+			return render_template('newstudent.html', name=name,
+				mobile=mobile,
+				email=email,
+				notes=notes,
+				mother=mother)
+
+		chk = False
+		for m in mothers:
+			if m.name == mother:
+				chk = True
+		if not chk:
+			flash("mother is not in our database, please add her info")
+			return render_template('newstudent.html', name=name,
+				mobile=mobile,
+				email=email,
+				notes=notes,
+				father=father)
 
 		newStudent = Students(name = name,
 			mobile = mobile,
