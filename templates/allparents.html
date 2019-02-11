@@ -2,8 +2,35 @@
 {% include "header.html" %}
 
 {% block content %}
-	{% for parent in parents %}
-		<h3>{{parent.name}}</h3>
-	{% endfor %}
+	<div class="table-responsive">
+		<table class="table table-striped table-hover table-bordered">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Name</th>
+					<th scope="col">Mobile</th>
+					<th scope="col">Address</th>
+					<th scope="col">Job</th>
+					<th scope="col">E-mail</th>
+					<th scope="col">Notes</th>
+					<th scope="col">Sex</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for parent in parents %}
+					<tr>
+						<th scope="row">{{parent.id}}</th>
+						<td>{{parent.name}}</td>
+						<td>{{parent.mobile}}</td>
+						<td>{{parent.address}}</td>
+						<td>{{parent.job}}</td>
+						<td>{{parent.email}}</td>
+						<td>{{parent.notes}}</td>
+						<td>{{parent.sex}}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
 
 {% endblock %}
