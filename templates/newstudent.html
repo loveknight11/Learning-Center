@@ -4,6 +4,8 @@
 {% block content %}
 
 
+
+
 	<div class="input-form">
 		<form method="post">
 			<div class="form-group">
@@ -24,12 +26,9 @@
 			</div>
 			<div class="form-group">
 				<label for="father">Father</label>
-				<input type="text" class="form-control" id="father" name="father" autocomplete="off" list="father-list" value="{{father}}">
-				<datalist id="father-list">
-					{% for parent in fathers %}
-						<option value="{{parent.name}}"></option>
-					{% endfor %}
-				</datalist>
+				<div class="md-form">
+				  <input type="search" id="father" name="father" class="form-control autocomplete">
+				</div>
 			</div>
 			<div class="form-group">
 				<label for="mother">Mother</label>
@@ -44,4 +43,34 @@
 			<button type="submit" class="btn btn-secondary" name="submit" value="cancel">Cancel</button>
 		</form>
 	</div>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.js"></script>
+<script type="text/javascript" src="{{url_for('static', filename='js/jquery.easy-autocomplete.min.js')}}"></script>
+<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/easy-autocomplete.min.css')}}">
+	<script type="text/javascript">
+		var fathers = [];
+		$.ajax( {
+          url: "/fathers/json",
+          dataType: "json",
+          success: function( data ) {
+          	var options = {
+          		data: data,
+          		getValue: "name",
+          		list: {
+				        match: {
+				            enabled: true
+				        }
+				    },
+				    theme: "plate-dark"
+          	};
+            $('#father').easyAutocomplete(options);
+            console.log(options);
+          }
+        } );
+	</script>
+
 {% endblock %}

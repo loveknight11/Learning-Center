@@ -34,6 +34,19 @@ class Parents(Base):
     sex = Column(String)
 
 
+    @property
+    def serialize(self):
+        return {
+                'id': self.id,
+                'name': self.name,
+                'mobile': self.mobile,
+                'address': self.address,
+                'job': self.job,
+                'email': self.email,
+                'notes': self.notes,
+                'sex': self.sex
+        }
+
 class Grades(Base):
     __tablename__ = 'grades'
     id = Column(Integer, primary_key=True)

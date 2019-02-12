@@ -219,6 +219,11 @@ def getCV():
 	return render_template('cv.html')
 
 
+@app.route('/fathers/json')
+def getFathersJson():
+	fathers = session.query(Parents).filter_by(sex='Male').all()
+	return jsonify([father.serialize for father in fathers])
+
 
 if __name__ == '__main__':
 	app.debug = True
