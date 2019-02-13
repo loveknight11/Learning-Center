@@ -225,6 +225,12 @@ def getFathersJson():
 	return jsonify([father.serialize for father in fathers])
 
 
+@app.route('/mothers/json')
+def getMothersJson():
+	mothers = session.query(Parents).filter_by(sex='Female').all()
+	return jsonify([mother.serialize for mother in mothers])
+
+
 if __name__ == '__main__':
 	app.debug = True
 	app.secret_key = secret_key

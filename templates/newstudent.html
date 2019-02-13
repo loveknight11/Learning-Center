@@ -27,17 +27,12 @@
 			<div class="form-group">
 				<label for="father">Father</label>
 				<div class="md-form">
-				  <input type="search" id="father" name="father" class="form-control autocomplete">
+				  <input type="search" id="father" name="father" class="form-control autocomplete" value="{{father}}">
 				</div>
 			</div>
 			<div class="form-group">
 				<label for="mother">Mother</label>
-				<input type="text" class="form-control" id="mother" name="mother" autocomplete="off" list="mother-list" value="{{mother}}">
-				<datalist id="mother-list">
-					{% for parent in mothers %}
-						<option value="{{parent.name}}"></option>
-					{% endfor %}
-				</datalist>
+				<input type="search" class="form-control autocomplete" id="mother" name="mother" value="{{mother}}">
 			</div>
 			<button type="submit" class="btn btn-primary" name="submit" value="save">Save</button>
 			<button type="submit" class="btn btn-secondary" name="submit" value="cancel">Cancel</button>
@@ -46,31 +41,11 @@
 
 
 
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.js"></script>
-<script type="text/javascript" src="{{url_for('static', filename='js/jquery.easy-autocomplete.min.js')}}"></script>
-<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/easy-autocomplete.min.css')}}">
-	<script type="text/javascript">
-		var fathers = [];
-		$.ajax( {
-          url: "/fathers/json",
-          dataType: "json",
-          success: function( data ) {
-          	var options = {
-          		data: data,
-          		getValue: "name",
-          		list: {
-				        match: {
-				            enabled: true
-				        }
-				    },
-				    theme: "plate-dark"
-          	};
-            $('#father').easyAutocomplete(options);
-            console.log(options);
-          }
-        } );
-	</script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.js"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/jquery.easy-autocomplete.min.js')}}"></script>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/easy-autocomplete.min.css')}}">
+	<script type="text/javascript" src="{{url_for('static', filename='js/autocomplete.js')}}"></script>
 
 {% endblock %}
