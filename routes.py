@@ -4,15 +4,9 @@ from sqlalchemy import *
 from database import Base, Students, Parents, Grades, Notes, Payments
 from sqlalchemy.orm import sessionmaker
 import random, string
+from database_functions import *
 
 app = Flask(__name__)
-engine = create_engine('sqlite:///db.db',
-                       connect_args={'check_same_thread': False})
-Base.metadata.bind = engine
-
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
-
 secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
 
 
@@ -23,14 +17,14 @@ def showIndex():
 
 @app.route('/students')
 def showStudents():
-	students = session.query(Students).all()
+	students = getAllStudents()
 	return render_template('allstudents.html', students=students)
 
 
 @app.route('/students/new', methods=['GET', 'POST'])
 def newStudent():
-	fathers = session.query(Parents).filter_by(sex='Male').all()
-	mothers = session.query(Parents).filter_by(sex='Female').all()
+	fathers = getAllFathers()
+	mothers = getAllMothers()
 	if request.method == 'GET':
 		return render_template('newstudent.html', fathers=fathers, mothers=mothers)
 	else :
@@ -41,11 +35,7 @@ def newStudent():
 		father = request.form.get('father')
 		mother = request.form.get('mother')
 		# check for father and mother in database
-		chk = False
-		for f in fathers:
-			if f.name == father:
-				chk = True
-		if not chk:
+		if not checkParent(father):
 			flash("father is not in our database, please add his info")
 			return render_template('newstudent.html', name=name,
 				mobile=mobile,
@@ -53,11 +43,7 @@ def newStudent():
 				notes=notes,
 				mother=mother)
 
-		chk = False
-		for m in mothers:
-			if m.name == mother:
-				chk = True
-		if not chk:
+		if not checkParent(mother):
 			flash("mother is not in our database, please add her info")
 			return render_template('newstudent.html', name=name,
 				mobile=mobile,
@@ -65,14 +51,7 @@ def newStudent():
 				notes=notes,
 				father=father)
 
-		newStudent = Students(name = name,
-			mobile = mobile,
-			email = email,
-			notes = notes,
-			father = father,
-			mother = mother)
-		session.add(newStudent)
-		session.commit()
+		addNewStudent(name, mobile, email, notes, father, mother)
 		flash("Student added")
 		return redirect(url_for('showIndex'))
 
@@ -194,15 +173,7 @@ def newParent():
 			job = request.form.get('job')
 			email = request.form.get('email')
 			notes = request.form.get('notes')
-			newParent = Parents(name = name,
-				sex = sex,
-				mobile = mobile,
-				address = address,
-				job = job,
-				email = email,
-				notes = notes)
-			session.add(newParent)
-			session.commit()
+			addNewParent(name=name, sex=sex, mobile=mobile, address=address, job=job, email=email, notes=notes)
 			flash('Parent Added Successfully')
 			return redirect(url_for('showIndex'))
 		else :
@@ -211,7 +182,7 @@ def newParent():
 
 @app.route('/parents')
 def showAllParents():
-	parents = session.query(Parents).all()
+	parents = getAllParents()
 	return render_template('allparents.html', parents = parents)
 
 @app.route('/cv')
@@ -221,13 +192,13 @@ def getCV():
 
 @app.route('/fathers/json')
 def getFathersJson():
-	fathers = session.query(Parents).filter_by(sex='Male').all()
+	fathers = getAllFathers()
 	return jsonify([father.serialize for father in fathers])
 
 
 @app.route('/mothers/json')
 def getMothersJson():
-	mothers = session.query(Parents).filter_by(sex='Female').all()
+	mothers = getAllMothers()
 	return jsonify([mother.serialize for mother in mothers])
 
 
