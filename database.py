@@ -21,6 +21,18 @@ class Students(Base):
     father = Column(Integer, ForeignKey('parents.name'))
     mother = Column(Integer, ForeignKey('parents.name'))
 
+    @property
+    def serialize(self):
+        return {
+                'id': self.id,
+                'name': self.name,
+                'mobile': self.mobile,
+                'email': self.email,
+                'notes': self.notes,
+                'father': self.father,
+                'mother': self.mother
+        }
+
 
 class Parents(Base):
     __tablename__ = 'parents'

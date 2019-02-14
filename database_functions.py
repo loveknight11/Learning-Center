@@ -55,3 +55,8 @@ def checkParent(parentName):
 		return False
 	else:
 		return True
+
+
+def getStudent(name):
+	student = session.query(Students).filter_by(name=name).first()
+	return student

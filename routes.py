@@ -12,8 +12,13 @@ def showIndex():
 	return render_template('index.html')
 
 
-@app.route('/students')
+@app.route('/students', methods=['GET', 'POST'])
 def showStudents():
+	if request.method == 'POST':
+		name = request.form.get('search')
+		student = getStudent(name)
+		return render_template('allstudents.html', students=student)
+
 	students = getAllStudents()
 	return render_template('allstudents.html', students=students)
 
@@ -197,6 +202,12 @@ def getFathersJson():
 def getMothersJson():
 	mothers = getAllMothers()
 	return jsonify([mother.serialize for mother in mothers])
+
+
+@app.route('/students/json')
+def getStudentsJson():
+	students = getAllStudents()
+	return jsonify([student.serialize for student in students])
 
 
 if __name__ == '__main__':
