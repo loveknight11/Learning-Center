@@ -1,7 +1,5 @@
-var fathers = [];
-var mothers = [];
-
 // fathers ajax request
+function fathersAutocomplete(field){
 		$.ajax( {
           url: "/fathers/json",
           dataType: "json",
@@ -16,12 +14,14 @@ var mothers = [];
 				    },
 				    theme: "plate-dark"
           	};
-            $('#father').easyAutocomplete(options);
+            $(field).easyAutocomplete(options);
             console.log(options);
           }
         } );
+}
 
 //mothers ajax request
+function mothersAutocomplete(field){
     $.ajax( {
           url: "/mothers/json",
           dataType: "json",
@@ -36,7 +36,8 @@ var mothers = [];
             },
             theme: "plate-dark"
             };
-            $('#mother').easyAutocomplete(options);
+            $(field).easyAutocomplete(options);
             console.log(options);
           }
         } );
+}

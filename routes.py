@@ -1,8 +1,5 @@
 import sys
 from flask import *
-from sqlalchemy import *
-from database import Base, Students, Parents, Grades, Notes, Payments
-from sqlalchemy.orm import sessionmaker
 import random, string
 from database_functions import *
 
