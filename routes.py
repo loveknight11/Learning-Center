@@ -8,67 +8,98 @@ secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x
 
 
 @app.route('/')
-def showIndex():
+def _showIndex():
 	return render_template('index.html')
 
 
 @app.route('/students', methods=['GET', 'POST'])
-def showStudents():
+def _showStudents():
 	if request.method == 'POST':
 		name = request.form.get('search')
-		student = getStudent(name)
-		return render_template('allstudents.html', students=student)
+		student = getStudentByName(name)
+		if student:
+			return render_template('allstudents.html', students=student)
+		else:
+			flash('Student name is not in our database')
+			students = getAllStudents()
+			render_template('allstudents.html', students=students)
 
 	students = getAllStudents()
 	return render_template('allstudents.html', students=students)
 
 
 @app.route('/students/new', methods=['GET', 'POST'])
-def newStudent():
+def _newStudent():
 	fathers = getAllFathers()
 	mothers = getAllMothers()
 	if request.method == 'GET':
 		return render_template('newstudent.html', fathers=fathers, mothers=mothers)
 	else :
-		name = request.form.get('name')
-		mobile = request.form.get('mobile')
-		email = request.form.get('email')
-		notes = request.form.get('notes')
-		father = request.form.get('father')
-		mother = request.form.get('mother')
-		# check for father and mother in database
-		if not checkParent(father):
-			flash("father is not in our database, please add his info")
-			return render_template('newstudent.html', name=name,
-				mobile=mobile,
-				email=email,
-				notes=notes,
-				mother=mother)
+		if request.form['submit'] == 'save':
+			name = request.form.get('name')
+			mobile = request.form.get('mobile')
+			email = request.form.get('email')
+			notes = request.form.get('notes')
+			father = request.form.get('father')
+			mother = request.form.get('mother')
+			# check for father and mother in database
+			if not checkParent(father):
+				flash("father is not in our database, please add his info")
+				return render_template('newstudent.html', name=name,
+					mobile=mobile,
+					email=email,
+					notes=notes,
+					mother=mother)
 
-		if not checkParent(mother):
-			flash("mother is not in our database, please add her info")
-			return render_template('newstudent.html', name=name,
-				mobile=mobile,
-				email=email,
-				notes=notes,
-				father=father)
+			if not checkParent(mother):
+				flash("mother is not in our database, please add her info")
+				return render_template('newstudent.html', name=name,
+					mobile=mobile,
+					email=email,
+					notes=notes,
+					father=father)
 
-		addNewStudent(name, mobile, email, notes, father, mother)
-		flash("Student added")
-		return redirect(url_for('showIndex'))
+			addNewStudent(name, mobile, email, notes, father, mother)
+			flash("Student added")
+			return redirect(url_for('_showIndex'))
+		else:
+			return redirect(url_for('_showIndex'))
 
 
 
 @app.route('/students/<int:studentId>/edit', methods=['GET', 'POST'])
-def editStudent(studentId):
+def _editStudent(studentId):
+	student = getStudentById(studentId)
+	print(student)
 	if request.method == 'GET':
-		return "Edit Student ID " + str(studentId)
+		return render_template('editstudent.html', student=student)
 	else:
-		return "Do Edit Student ID " + str(studentId)
+		if request.form['submit'] == 'save':
+			name = request.form.get('name')
+			mobile = request.form.get('mobile')
+			email = request.form.get('email')
+			notes = request.form.get('notes')
+			father = request.form.get('father')
+			mother = request.form.get('mother')
+			# check for father and mother in database
+			if not checkParent(father):
+				flash("father is not in our database, please add his info")
+				return render_template('editstudent.html', student=student)
+
+			if not checkParent(mother):
+				flash("mother is not in our database, please add her info")
+				return render_template('editstudent.html', student=student)
+			
+			editStudent(student.id, name, mobile, email, notes, father, mother)
+			flash('Student Information Updated')
+			students = getAllStudents()
+			return render_template('allstudents.html', students=students)
+		else:
+			return redirect(url_for('_showIndex'))
 
 
 @app.route('/students/<int:studentId>/delete', methods=['GET', 'POST'])
-def deleteStudent(studentId):
+def _deleteStudent(studentId):
 	if request.method == 'GET':
 		return "Are you sure to delete Student ID " + str(studentId)
 	else:
@@ -76,12 +107,12 @@ def deleteStudent(studentId):
 
 
 @app.route('/students/<int:studentId>/grades')
-def showStudentGrades(studentId):
+def _showStudentGrades(studentId):
 	return "Student ID " + str(studentId) + " Grades"
 
 
 @app.route('/students/<int:studentId>/grades/new', methods=['GET', 'POST'])
-def addStudentGrades(studentId):
+def _addStudentGrades(studentId):
 	if request.method == 'GET':
 		return " Add grade for Student ID " + str(studentId)
 	else:
@@ -89,7 +120,7 @@ def addStudentGrades(studentId):
 
 
 @app.route('/students/<int:studentId>/grades/<int:gradesId>/edit', methods=['GET', 'POST'])
-def editStudentGrades(studentId, gradesId):
+def _editStudentGrades(studentId, gradesId):
 	if request.method == 'GET':
 		return " Edit grade ID " + str(gradesId) + " for Student ID " + str(studentId)
 	else:
@@ -97,7 +128,7 @@ def editStudentGrades(studentId, gradesId):
 
 
 @app.route('/students/<int:studentId>/grades/<int:gradesId>/delete', methods=['GET', 'POST'])
-def deleteStudentGrades(studentId, gradesId):
+def _deleteStudentGrades(studentId, gradesId):
 	if request.method == 'GET':
 		return "Are you sure to delete grade ID " + str(gradesId) + " for Student ID " + str(studentId)
 	else:
@@ -105,12 +136,12 @@ def deleteStudentGrades(studentId, gradesId):
 
 
 @app.route('/students/<int:studentId>/notes')
-def showStudentNotes(studentId):
+def _showStudentNotes(studentId):
 	return "Student ID " + str(studentId) + " Notes"
 
 
 @app.route('/students/<int:studentId>/notes/new', methods=['GET', 'POST'])
-def addStudentNotes(studentId):
+def _addStudentNotes(studentId):
 	if request.method == 'GET':
 		return " Add note for Student ID " + str(studentId)
 	else:
@@ -118,7 +149,7 @@ def addStudentNotes(studentId):
 
 
 @app.route('/students/<int:studentId>/notes/<int:notesId>/edit', methods=['GET', 'POST'])
-def editStudentNotes(studentId, notesId):
+def _editStudentNotes(studentId, notesId):
 	if request.method == 'GET':
 		return " Edit note ID " + str(notesId) + " for Student ID " + str(studentId)
 	else:
@@ -126,7 +157,7 @@ def editStudentNotes(studentId, notesId):
 
 
 @app.route('/students/<int:studentId>/notes/<int:notesId>/delete', methods=['GET', 'POST'])
-def deleteStudentNotes(studentId, notesId):
+def _deleteStudentNotes(studentId, notesId):
 	if request.method == 'GET':
 		return "Are you sure to delete note ID " + str(notesId) + " for Student ID " + str(studentId)
 	else:
@@ -134,12 +165,12 @@ def deleteStudentNotes(studentId, notesId):
 
 
 @app.route('/students/<int:studentId>/payments')
-def showStudentPayments(studentId):
+def _showStudentPayments(studentId):
 	return "Student ID " + str(studentId) + " Payments"
 
 
 @app.route('/students/<int:studentId>/payments/new', methods=['GET', 'POST'])
-def addStudentPayments(studentId):
+def _addStudentPayments(studentId):
 	if request.method == 'GET':
 		return " Add payment for Student ID " + str(studentId)
 	else:
@@ -147,7 +178,7 @@ def addStudentPayments(studentId):
 
 
 @app.route('/students/<int:studentId>/payments/<int:paymentsId>/edit', methods=['GET', 'POST'])
-def editStudentPayments(studentId, paymentsId):
+def _editStudentPayments(studentId, paymentsId):
 	if request.method == 'GET':
 		return " Edit payment ID " + str(paymentsId) + " for Student ID " + str(studentId)
 	else:
@@ -155,7 +186,7 @@ def editStudentPayments(studentId, paymentsId):
 
 
 @app.route('/students/<int:studentId>/payments/<int:paymentsId>/delete', methods=['GET', 'POST'])
-def deleteStudentPayments(studentId, paymentsId):
+def _deleteStudentPayments(studentId, paymentsId):
 	if request.method == 'GET':
 		return "Are you sure to delete payment ID " + str(paymentsId) + " for Student ID " + str(studentId)
 	else:
@@ -163,7 +194,7 @@ def deleteStudentPayments(studentId, paymentsId):
 
 
 @app.route('/parents/new', methods=['GET', 'POST'])
-def newParent():
+def _newParent():
 	if request.method == 'GET':
 		return render_template('newparent.html')
 	else :
@@ -177,18 +208,18 @@ def newParent():
 			notes = request.form.get('notes')
 			addNewParent(name=name, sex=sex, mobile=mobile, address=address, job=job, email=email, notes=notes)
 			flash('Parent Added Successfully')
-			return redirect(url_for('showIndex'))
+			return redirect(url_for('_showIndex'))
 		else :
-			return redirect(url_for('showIndex'))
+			return redirect(url_for('_showIndex'))
 
 
 @app.route('/parents')
-def showAllParents():
+def _showAllParents():
 	parents = getAllParents()
 	return render_template('allparents.html', parents = parents)
 
 @app.route('/cv')
-def getCV():
+def _getCV():
 	return render_template('cv.html')
 
 

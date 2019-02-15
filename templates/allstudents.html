@@ -32,8 +32,8 @@
 						<td>{{student.notes}}</td>
 						<td>{{student.father}}</td>
 						<td>{{student.mother}}</td>
-						<td><a href="{{url_for('editStudent', studentId=student.id)}}">Edit</a></td>
-						<td><a href="{{url_for('deleteStudent', studentId=student.id)}}">Delete</a></td>
+						<td><a href="{{url_for('_editStudent', studentId=student.id)}}">Edit</a></td>
+						<td><a href="{{url_for('_deleteStudent', studentId=student.id)}}">Delete</a></td>
 					</tr>
 				{% endfor %}
 				{% else %}
@@ -45,8 +45,8 @@
 						<td>{{students.notes}}</td>
 						<td>{{students.father}}</td>
 						<td>{{students.mother}}</td>
-						<td><a href="{{url_for('editStudent', studentId=students.id)}}">Edit</a></td>
-						<td><a href="{{url_for('deleteStudent', studentId=students.id)}}">Delete</a></td>
+						<td><a href="{{url_for('_editStudent', studentId=students.id)}}">Edit</a></td>
+						<td><a href="{{url_for('_deleteStudent', studentId=students.id)}}">Delete</a></td>
 					</tr>
 				{% endif %}
 			</tbody>

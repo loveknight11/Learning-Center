@@ -20,6 +20,18 @@ def addNewStudent(name, mobile, email, notes, father, mother):
 	session.commit()
 
 
+def editStudent(id, name, mobile, email, notes, father, mother):
+	student = getStudentById(id=id)
+	student.name = name
+	student.mobile = mobile
+	student.email = email
+	student.notes = notes
+	student.father = father
+	student.mother = mother
+	session.add(student)
+	session.commit()
+
+
 def addNewParent(name, sex, mobile, address, job, email, notes):
 	newParent = Parents(name = name,
 				sex = sex,
@@ -57,6 +69,11 @@ def checkParent(parentName):
 		return True
 
 
-def getStudent(name):
+def getStudentByName(name):
 	student = session.query(Students).filter_by(name=name).first()
+	return student
+
+
+def getStudentById(id):
+	student = session.query(Students).filter_by(id=id).first()
 	return student
