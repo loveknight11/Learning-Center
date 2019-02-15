@@ -100,10 +100,20 @@ def _editStudent(studentId):
 
 @app.route('/students/<int:studentId>/delete', methods=['GET', 'POST'])
 def _deleteStudent(studentId):
+	student = getStudentById(studentId)
 	if request.method == 'GET':
-		return "Are you sure to delete Student ID " + str(studentId)
+		return render_template('deletestudent.html', student=student)
 	else:
-		return "Do delete Student ID " + str(studentId)
+		if request.form['submit'] == 'delete':
+			deleteStudentGrades(studentId)
+			deleteStudentNotes(studentId)
+			deleteStudentPayments(studentId)
+			deleteStudent(studentId)
+			flash('All Student Data deleted')
+			students = getAllStudents()
+			return redirect(url_for('_showStudents',students=students))
+		else:
+			return redirect(url_for('_showIndex'))
 
 
 @app.route('/students/<int:studentId>/grades')
