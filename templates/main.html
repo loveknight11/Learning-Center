@@ -12,7 +12,17 @@
 	<link rel="stylesheet" type="text/css" href="/static/style.css">
 	<!-- font awesome -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-
+	<script>
+			$(document).ready(function(){
+				$("#search").on("keyup", function() {
+					var value = $(this).val().toLowerCase();
+					console.log(value);
+					$("#my-table tr").filter(function() {
+						$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+					});
+				});
+			});
+			</script>
 	<title></title>
 </head>
 <body>

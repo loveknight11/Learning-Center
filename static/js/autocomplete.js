@@ -37,7 +37,6 @@ function mothersAutocomplete(field){
             theme: "plate-dark"
             };
             $(field).easyAutocomplete(options);
-            console.log(options);
           }
         } );
 }
@@ -60,7 +59,6 @@ function studentsAutocomplete(field){
             theme: "plate-dark"
             };
             $(field).easyAutocomplete(options);
-            console.log(options);
           }
         } );
 }

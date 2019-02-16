@@ -1,6 +1,5 @@
 {% extends "main.html" %}
 {% include "header.html" %}
-
 {% block content %}
 	<form class="form-inline my-2 my-lg-0" method="POST">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" id="search">
@@ -21,7 +20,7 @@
 					<th scope="col"></th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="my-table">
 				{% if students[1] %}
 				{% for student in students %}
 					<tr>
@@ -52,8 +51,7 @@
 			</tbody>
 		</table>
 	</div>
-
-
+	
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.js"></script>
@@ -63,5 +61,14 @@
 	<script type="text/javascript">
 		studentsAutocomplete('#search');
 	</script>
-
+<script>
+		$(document).ready(function(){
+			$("#search").on("keyup", function() {
+				var value = $(this).val().toLowerCase();
+				$("#my-table tr").filter(function() {
+					$(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+				});
+			});
+		});
+		</script>
 {% endblock %}
