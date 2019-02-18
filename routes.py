@@ -2,6 +2,7 @@ import sys
 from flask import *
 import random, string
 from database_functions import *
+from datetime import datetime
 
 app = Flask(__name__)
 secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
@@ -30,7 +31,10 @@ def _showStudents():
 @app.route('/students/<int:studentId>')
 def _studentDetails(studentId):
     student = getStudentById(studentId)
-    return render_template('student.html', student=student)
+    grades = getStudentGrades(studentId)
+    notes = getStudentNotes(studentId)
+    payments = getStudentPayments(studentId)
+    return render_template('student.html', student=student, notes=notes, grades=grades, payments=payments)
 
 
 @app.route('/students/new', methods=['GET', 'POST'])
@@ -132,7 +136,19 @@ def _addStudentGrades(studentId):
     if request.method == 'GET':
         return render_template('newgrade.html', student=student)
     else:
-        return "Do Add grade for Student ID " + str(studentId)
+        if request.form['submit'] == 'save':
+            date = request.form.get('date')
+            valdate = datetime.strptime(date, "%Y-%m-%d").date()
+            grade = request.form.get('grade')
+            notes = request.form.get('notes')
+            newGrade = Grades(student_id= studentId,
+                              grade= grade,
+                              date= valdate,
+                              notes= notes)
+            session.add(newGrade)
+            session.commit()
+            flash('Student Grade Saved')
+            return redirect(url_for('_studentDetails',studentId= studentId))
 
 
 @app.route('/students/<int:studentId>/grades/<int:gradesId>/edit', methods=['GET', 'POST'])

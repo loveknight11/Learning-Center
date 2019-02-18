@@ -97,3 +97,13 @@ def deleteStudentPayments(studentId):
 def deleteStudent(studentId):
 	student = session.query(Students).filter_by(id=studentId).delete()
 	session.commit()
+
+
+def getStudentGrades(studentId):
+	return session.query(Grades).filter_by(student_id=studentId).all()
+
+def getStudentNotes(studentId):
+	return session.query(Notes).filter_by(student_id=studentId).all()
+
+def getStudentPayments(studentId):
+	return session.query(Payments).filter_by(student_id=studentId).all()

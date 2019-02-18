@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7449f553-9748-4591-a598-606175ff438e" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/database_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.db" beforeDir="false" afterPath="$PROJECT_DIR$/db.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/allstudents.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/allstudents.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/newgrade.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/newgrade.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,23 +19,14 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="routes.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="routes.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/routes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1965">
-              <caret line="21" column="13" lean-forward="true" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+            <state relative-caret-position="357">
+              <caret line="36" column="106" selection-start-line="36" selection-start-column="106" selection-end-line="36" selection-end-column="106" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="student.html" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/templates/student.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="500">
-              <caret line="64" column="116" selection-start-line="64" selection-start-column="116" selection-end-line="64" selection-end-column="116" />
             </state>
           </provider>
         </entry>
@@ -47,6 +39,15 @@
               <folding>
                 <element signature="e#0#68#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="newgrade.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/newgrade.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="170">
+              <caret line="10" column="78" selection-start-line="10" selection-start-column="78" selection-end-line="10" selection-end-column="78" />
             </state>
           </provider>
         </entry>
@@ -68,10 +69,11 @@
       <list>
         <option value="$PROJECT_DIR$/templates/header.html" />
         <option value="$PROJECT_DIR$/templates/main.html" />
-        <option value="$PROJECT_DIR$/templates/newgrade.html" />
         <option value="$PROJECT_DIR$/templates/allstudents.html" />
-        <option value="$PROJECT_DIR$/routes.py" />
         <option value="$PROJECT_DIR$/templates/student.html" />
+        <option value="$PROJECT_DIR$/templates/newgrade.html" />
+        <option value="$PROJECT_DIR$/database_functions.py" />
+        <option value="$PROJECT_DIR$/routes.py" />
       </list>
     </option>
   </component>
@@ -84,7 +86,7 @@
   <component name="NodePackageJsonFileManager">
     <packageJsonPaths />
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="10" />
     <option name="width" value="1346" />
     <option name="height" value="728" />
@@ -249,13 +251,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/newgrade.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="23" column="10" selection-start-line="23" selection-start-column="10" selection-end-line="23" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/templates/main.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -277,6 +272,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/student.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="500">
+          <caret line="64" column="116" selection-start-line="64" selection-start-column="116" selection-end-line="64" selection-end-column="116" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/newgrade.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="78" selection-start-line="10" selection-start-column="78" selection-end-line="10" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/database.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
@@ -287,20 +296,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/routes.py">
+    <entry file="file://$PROJECT_DIR$/database_functions.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1965">
-          <caret line="21" column="13" lean-forward="true" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+        <state relative-caret-position="524">
+          <caret line="108" column="33" selection-start-line="108" selection-start-column="33" selection-end-line="108" selection-end-column="33" />
           <folding>
-            <element signature="e#0#10#0" expanded="true" />
+            <element signature="e#0#24#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/student.html">
+    <entry file="file://$PROJECT_DIR$/routes.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="64" column="116" selection-start-line="64" selection-start-column="116" selection-end-line="64" selection-end-column="116" />
+        <state relative-caret-position="357">
+          <caret line="36" column="106" selection-start-line="36" selection-start-column="106" selection-end-line="36" selection-end-column="106" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
