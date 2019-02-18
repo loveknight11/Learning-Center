@@ -25,7 +25,7 @@
 				{% for student in students %}
 					<tr>
 						<th scope="row">{{student.id}}</th>
-						<td>{{student.name}}</td>
+						<td><a href="{{ url_for('_studentDetails', studentId=student.id) }}">{{student.name}}</a></td>
 						<td>{{student.mobile}}</td>
 						<td>{{student.email}}</td>
 						<td>{{student.notes}}</td>
@@ -38,7 +38,7 @@
 				{% else %}
 					<tr>
 						<th scope="row">{{students.id}}</th>
-						<td>{{students.name}}</td>
+						<td><a href="{{ url_for('_studentDetails', studentId=student.id) }}">{{student.name}}</a></td>
 						<td>{{students.mobile}}</td>
 						<td>{{students.email}}</td>
 						<td>{{students.notes}}</td>

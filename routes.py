@@ -27,6 +27,11 @@ def _showStudents():
     students = getAllStudents()
     return render_template('allstudents.html', students=students)
 
+@app.route('/students/<int:studentId>')
+def _studentDetails(studentId):
+    student = getStudentById(studentId)
+    return render_template('student.html', student=student)
+
 
 @app.route('/students/new', methods=['GET', 'POST'])
 def _newStudent():
