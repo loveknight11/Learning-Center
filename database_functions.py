@@ -114,3 +114,6 @@ def getGrade(gradesId):
 def deleteGrade(gradeId):
 	session.query(Grades).filter_by(id=gradeId).delete()
 	session.commit()
+
+def getNote(notesId):
+	return session.query(Notes).filter_by(id=notesId).first()

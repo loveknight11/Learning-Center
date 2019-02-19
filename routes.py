@@ -219,10 +219,25 @@ def _addStudentNotes(studentId):
 
 @app.route('/students/<int:studentId>/notes/<int:notesId>/edit', methods=['GET', 'POST'])
 def _editStudentNotes(studentId, notesId):
+    student = getStudentById(studentId)
+    note = getNote(notesId)
     if request.method == 'GET':
-        return " Edit note ID " + str(notesId) + " for Student ID " + str(studentId)
+        return render_template('editnote.html', student=student, note=note)
     else:
-        return "Do Edit note ID " + str(notesId) + " for Student ID " + str(studentId)
+        if request.form['submit'] == 'save':
+            date = request.form.get('date')
+            valdate = datetime.strptime(date, "%Y-%m-%d").date()
+            nnote = request.form.get('note')
+            notes = request.form.get('notes')
+            note.student_id = studentId
+            note.grade = nnote
+            note.date = valdate
+            note.notes = notes
+            session.add(note)
+            session.commit()
+            flash('Student Note Edited')
+
+        return redirect(url_for('_studentDetails', studentId=studentId))
 
 
 @app.route('/students/<int:studentId>/notes/<int:notesId>/delete', methods=['GET', 'POST'])
