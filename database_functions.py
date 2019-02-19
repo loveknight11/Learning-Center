@@ -110,3 +110,7 @@ def getStudentPayments(studentId):
 
 def getGrade(gradesId):
 	return session.query(Grades).filter_by(id=gradesId).first()
+
+def deleteGrade(gradeId):
+	session.query(Grades).filter_by(id=gradeId).delete()
+	session.commit()

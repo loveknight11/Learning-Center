@@ -148,7 +148,8 @@ def _addStudentGrades(studentId):
             session.add(newGrade)
             session.commit()
             flash('Student Grade Saved')
-            return redirect(url_for('_studentDetails',studentId= studentId))
+
+        return redirect(url_for('_studentDetails',studentId= studentId))
 
 
 @app.route('/students/<int:studentId>/grades/<int:gradesId>/edit', methods=['GET', 'POST'])
@@ -171,17 +172,22 @@ def _editStudentGrades(studentId, gradesId):
             session.add(grade)
             session.commit()
             flash('Student Grade Edited')
-            return redirect(url_for('_studentDetails',studentId= studentId))
-        else:
-            return redirect(url_for('_studentDetails', studentId=studentId))
+
+        return redirect(url_for('_studentDetails', studentId=studentId))
 
 
 @app.route('/students/<int:studentId>/grades/<int:gradesId>/delete', methods=['GET', 'POST'])
 def _deleteStudentGrades(studentId, gradesId):
+    student = getStudentById(studentId)
+    grade = getGrade(gradesId)
     if request.method == 'GET':
-        return "Are you sure to delete grade ID " + str(gradesId) + " for Student ID " + str(studentId)
+        return render_template('deletegrade.html', student=student)
     else:
-        return "Do delete grade ID " + str(gradesId) + " for Student ID " + str(studentId)
+        if request.form['submit'] == 'delete':
+            deleteGrade(gradesId)
+            flash('grade deleted')
+
+        return redirect(url_for('_studentDetails', studentId=studentId))
 
 
 @app.route('/students/<int:studentId>/notes')
