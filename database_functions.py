@@ -107,3 +107,6 @@ def getStudentNotes(studentId):
 
 def getStudentPayments(studentId):
 	return session.query(Payments).filter_by(student_id=studentId).all()
+
+def getGrade(gradesId):
+	return session.query(Grades).filter_by(id=gradesId).first()

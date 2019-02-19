@@ -153,10 +153,27 @@ def _addStudentGrades(studentId):
 
 @app.route('/students/<int:studentId>/grades/<int:gradesId>/edit', methods=['GET', 'POST'])
 def _editStudentGrades(studentId, gradesId):
+    student = getStudentById(studentId)
+    grade = getGrade(gradesId)
     if request.method == 'GET':
-        return " Edit grade ID " + str(gradesId) + " for Student ID " + str(studentId)
+        print(grade)
+        return render_template('editgrade.html', student=student, grade=grade)
     else:
-        return "Do Edit grade ID " + str(gradesId) + " for Student ID " + str(studentId)
+        if request.form['submit'] == 'save':
+            date = request.form.get('date')
+            valdate = datetime.strptime(date, "%Y-%m-%d").date()
+            ggrade = request.form.get('grade')
+            notes = request.form.get('notes')
+            grade.student_id = studentId
+            grade.grade= ggrade
+            grade.date= valdate
+            grade.notes= notes
+            session.add(grade)
+            session.commit()
+            flash('Student Grade Edited')
+            return redirect(url_for('_studentDetails',studentId= studentId))
+        else:
+            return redirect(url_for('_studentDetails', studentId=studentId))
 
 
 @app.route('/students/<int:studentId>/grades/<int:gradesId>/delete', methods=['GET', 'POST'])
