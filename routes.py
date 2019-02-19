@@ -197,10 +197,24 @@ def _showStudentNotes(studentId):
 
 @app.route('/students/<int:studentId>/notes/new', methods=['GET', 'POST'])
 def _addStudentNotes(studentId):
+    student = getStudentById(studentId)
     if request.method == 'GET':
-        return " Add note for Student ID " + str(studentId)
+        return render_template('newnote.html', student=student)
     else:
-        return "Do Add note for Student ID " + str(studentId)
+        if request.form['submit'] == 'save':
+            date = request.form.get('date')
+            valdate = datetime.strptime(date, "%Y-%m-%d").date()
+            note = request.form.get('note')
+            notes = request.form.get('notes')
+            newNote = Notes(student_id= studentId,
+                              note= note,
+                              date= valdate,
+                              notes= notes)
+            session.add(newNote)
+            session.commit()
+            flash('Student Note Saved')
+
+        return redirect(url_for('_studentDetails',studentId= studentId))
 
 
 @app.route('/students/<int:studentId>/notes/<int:notesId>/edit', methods=['GET', 'POST'])
