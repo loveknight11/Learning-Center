@@ -1,0 +1,45 @@
+{% extends "main.html" %}
+{% include "header.html" %}
+
+{% block content %}
+
+	<div class="input-form">
+		<form method="post">
+			<div class="form-group">
+				<label for="name">Name</label>
+				<input class="form-control" type="text" name="name" id="name" value="{{parent.name}}">
+			</div>
+			<div class="form-group">
+				<label for="mobile">Sex</label>
+				<input class="form-control" type="text" name="sex" id="sex" value="{{parent.sex}}" list="sex-list">
+                <datalist id="sex-list">
+					<option value="Male"></option>
+					<option value="Female"></option>
+				</datalist>
+			</div>
+            <div class="form-group">
+				<label for="mobile">Mobile</label>
+				<input class="form-control" type="text" name="mobile" id="mobile" value="{{ parent.mobile }}">
+			</div>
+            <div class="form-group">
+				<label for="address">Address</label>
+				<textarea class="form-control" name="address" id="address" rows="3">{{ parent.address }}</textarea>
+			</div>
+            <div class="form-group">
+				<label for="job">Job</label>
+				<input class="form-control" type="text" name="job" id="job" value="{{ parent.job }}">
+			</div>
+			<div class="form-group">
+				<label for="email">E-mail</label>
+				<input class="form-control" type="email" name="email" id="email" value="{{parent.email}}">
+			</div>
+			<div class="form-group">
+				<label for="notes">Notes</label>
+				<textarea class="form-control" name="notes" id="notes" rows="3">{{parent.notes}}</textarea>
+			</div>
+			<button type="submit" class="btn btn-primary" name="submit" value="save">Save</button>
+			<button type="submit" class="btn btn-secondary" name="submit" value="cancel">Cancel</button>
+		</form>
+	</div>
+
+{% endblock %}

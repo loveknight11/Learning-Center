@@ -80,7 +80,6 @@ def _newStudent():
 @app.route('/students/<int:studentId>/edit', methods=['GET', 'POST'])
 def _editStudent(studentId):
     student = getStudentById(studentId)
-    print(student)
     if request.method == 'GET':
         return render_template('editstudent.html', student=student)
     else:
@@ -324,9 +323,27 @@ def _newParent():
             return redirect(url_for('_showIndex'))
 
 # Edit Parent
-@app.route('/parents/edit', methods=['GET', 'POST'])
-def _editParent():
-    return True
+@app.route('/parents/<int:parentId>/edit', methods=['GET', 'POST'])
+def _editParent(parentId):
+    parent = getParentById(parentId)
+    if request.method == 'GET':
+        return render_template('editparent.html', parent=parent)
+    else:
+        if request.form['submit'] == 'save':
+            name = request.form.get('name')
+            mobile = request.form.get('mobile')
+            address = request.form.get('address')
+            job = request.form.get('job')
+            email = request.form.get('email')
+            notes = request.form.get('notes')
+            sex = request.form.get('sex')
+
+            editParent(parent.id, name, mobile, address, job, email, notes, sex)
+            flash('Parent Information Updated')
+            parents = getAllParents()
+            return render_template('allparents.html', parents=parents)
+        else:
+            return redirect(url_for('_showAllParents'))
 
 
 # Delete Parent
