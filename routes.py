@@ -323,6 +323,18 @@ def _newParent():
         else :
             return redirect(url_for('_showIndex'))
 
+# Edit Parent
+@app.route('/parents/edit', methods=['GET', 'POST'])
+def _editParent():
+    return True
+
+
+# Delete Parent
+@app.route('/parents/delete', methods=['GET', 'POST'])
+def _deleteParent():
+    return True
+
+
 
 @app.route('/parents')
 def _showAllParents():
@@ -332,6 +344,12 @@ def _showAllParents():
 @app.route('/cv')
 def _getCV():
     return render_template('cv.html')
+
+@app.route('/parents/json')
+def getParentsJson():
+    parents = getAllParents()
+    return jsonify([parent.serialize for parent in parents])
+
 
 
 @app.route('/fathers/json')

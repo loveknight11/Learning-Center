@@ -1,3 +1,25 @@
+// parents ajax request
+function parentsAutocomplete(field){
+		$.ajax( {
+          url: "/parents/json",
+          dataType: "json",
+          success: function( data ) {
+          	var options = {
+          		data: data,
+          		getValue: "name",
+          		list: {
+				        match: {
+				            enabled: true
+				        }
+				    },
+				    theme: "plate-dark"
+          	};
+            $(field).easyAutocomplete(options);
+            console.log(options);
+          }
+        } );
+}
+
 // fathers ajax request
 function fathersAutocomplete(field){
 		$.ajax( {
