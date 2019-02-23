@@ -304,10 +304,16 @@ def _editStudentPayments(studentId, paymentsId):
 
 @app.route('/students/<int:studentId>/payments/<int:paymentsId>/delete', methods=['GET', 'POST'])
 def _deleteStudentPayments(studentId, paymentsId):
+    student = getStudentById(studentId)
+    payment = getPayment(paymentsId)
     if request.method == 'GET':
-        return "Are you sure to delete payment ID " + str(paymentsId) + " for Student ID " + str(studentId)
+        return render_template('deletepayment.html', student=student)
     else:
-        return "Do delete payment ID " + str(paymentsId) + " for Student ID " + str(studentId)
+        if request.form['submit'] == 'delete':
+            deletePayment(paymentsId)
+            flash('Student Payment deleted')
+
+        return redirect(url_for('_studentDetails', studentId=studentId))
 
 
 @app.route('/parents/new', methods=['GET', 'POST'])

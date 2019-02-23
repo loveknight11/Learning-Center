@@ -126,3 +126,8 @@ def deleteNote(notesId):
 
 def getPayment(paymentsId):
     return session.query(Payments).filter_by(id=paymentsId).first()
+
+
+def deletePayment(paymentsId):
+    session.query(Payments).filter_by(id=paymentsId).delete()
+    session.commit()
