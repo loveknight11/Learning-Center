@@ -281,10 +281,25 @@ def _addStudentPayments(studentId):
 
 @app.route('/students/<int:studentId>/payments/<int:paymentsId>/edit', methods=['GET', 'POST'])
 def _editStudentPayments(studentId, paymentsId):
+    student = getStudentById(studentId)
+    payment = getPayment(paymentsId)
     if request.method == 'GET':
-        return " Edit payment ID " + str(paymentsId) + " for Student ID " + str(studentId)
+        return render_template('editpayment.html', student=student, payment=payment)
     else:
-        return "Do Edit payment ID " + str(paymentsId) + " for Student ID " + str(studentId)
+        if request.form['submit'] == 'save':
+            date = request.form.get('date')
+            valdate = datetime.strptime(date, "%Y-%m-%d").date()
+            ppayment = request.form.get('payment')
+            notes = request.form.get('notes')
+            payment.student_id = studentId
+            payment.payment = ppayment
+            payment.date = valdate
+            payment.notes = notes
+            session.add(payment)
+            session.commit()
+            flash('Student Payment Edited')
+
+        return redirect(url_for('_studentDetails', studentId=studentId))
 
 
 @app.route('/students/<int:studentId>/payments/<int:paymentsId>/delete', methods=['GET', 'POST'])

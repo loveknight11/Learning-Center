@@ -122,3 +122,7 @@ def getNote(notesId):
 def deleteNote(notesId):
     session.query(Notes).filter_by(id=notesId).delete()
     session.commit()
+
+
+def getPayment(paymentsId):
+    return session.query(Payments).filter_by(id=paymentsId).first()
