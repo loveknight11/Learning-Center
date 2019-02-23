@@ -157,3 +157,13 @@ def getStudentsForParent(parentName):
 def deleteParent(parentId):
     session.query(Parents).filter_by(id=parentId).delete()
     session.commit()
+
+
+def editStudentParentName(oldParentName, newParentName):
+    studentsForFather = session.query(Students).filter_by(father=oldParentName).all()
+    studentsForMother = session.query(Students).filter_by(mother=oldParentName).all()
+    for student in studentsForFather:
+        student.father = newParentName
+    for student in studentsForMother:
+        student.mother = newParentName
+    session.commit()

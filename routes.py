@@ -326,6 +326,7 @@ def _newParent():
 @app.route('/parents/<int:parentId>/edit', methods=['GET', 'POST'])
 def _editParent(parentId):
     parent = getParentById(parentId)
+    students = getStudentsForParent(parent.name)
     if request.method == 'GET':
         return render_template('editparent.html', parent=parent)
     else:
@@ -338,7 +339,11 @@ def _editParent(parentId):
             notes = request.form.get('notes')
             sex = request.form.get('sex')
 
+            if parent.name != name:
+                editStudentParentName(parent.name, name)
+
             editParent(parent.id, name, mobile, address, job, email, notes, sex)
+
             flash('Parent Information Updated')
             parents = getAllParents()
             return render_template('allparents.html', parents=parents)
