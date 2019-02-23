@@ -87,6 +87,10 @@ def getStudentByName(name):
     return student
 
 
+def getParentByName(name):
+    return session.query(Parents).filter_by(name=name).all()
+
+
 def getStudentById(id):
     student = session.query(Students).filter_by(id=id).first()
     return student

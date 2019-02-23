@@ -371,8 +371,17 @@ def _deleteParent(parentId):
 
 
 
-@app.route('/parents')
+@app.route('/parents', methods=['GET', 'POST'])
 def _showAllParents():
+    if request.method == 'POST':
+        name = request.form.get('search')
+        parent = getParentByName(name)
+        if parent:
+            return render_template('allparents.html', parents=parent)
+        else:
+            flash('Parent name is not in our database')
+            parents = getAllParents()
+            render_template('allparents.html', parents=parents)
     parents = getAllParents()
     return render_template('allparents.html', parents = parents)
 
