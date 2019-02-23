@@ -149,3 +149,11 @@ def getPayment(paymentsId):
 def deletePayment(paymentsId):
     session.query(Payments).filter_by(id=paymentsId).delete()
     session.commit()
+
+def getStudentsForParent(parentName):
+    return session.query(Students).filter(or_(Students.father==parentName, Students.mother==parentName)).all()
+
+
+def deleteParent(parentId):
+    session.query(Parents).filter_by(id=parentId).delete()
+    session.commit()

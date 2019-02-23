@@ -347,9 +347,22 @@ def _editParent(parentId):
 
 
 # Delete Parent
-@app.route('/parents/delete', methods=['GET', 'POST'])
-def _deleteParent():
-    return True
+@app.route('/parents/<int:parentId>/delete', methods=['GET', 'POST'])
+def _deleteParent(parentId):
+    parent = getParentById(parentId)
+    students = getStudentsForParent(parent.name)
+    if request.method == 'GET':
+        if students:
+            flash('Parent can not be deleted as he has registered Students under his name')
+            return redirect(url_for('_showAllParents'))
+        else:
+            return render_template('deleteparent.html', parent=parent)
+    else:
+        if request.form['submit'] == 'delete':
+            deleteParent(parentId)
+            flash('Parent deleted')
+        return redirect(url_for('_showAllParents'))
+
 
 
 

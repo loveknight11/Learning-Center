@@ -1,0 +1,12 @@
+{% extends "main.html" %}
+{% include "header.html" %}
+
+{% block content %}
+	<div class="alert alert-danger input-form mt-5">
+        <form method="POST">
+                <p class="alert alert-danger text-center">Are you sure to delete {{parent.name}} ?</p>
+                <button type="submit" class="btn btn-danger" name="submit" value="delete">Delete</button>
+                <button type="submit" class="btn btn-secondary" name="submit" value="cancel">Cancel</button>
+        </form>  
+    </div>
+{% endblock %}
