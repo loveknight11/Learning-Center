@@ -7,12 +7,12 @@ from datetime import datetime
 app = Flask(__name__)
 secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
 
-
+# Main Page
 @app.route('/')
 def _showIndex():
     return render_template('index.html')
 
-
+# All Students
 @app.route('/students', methods=['GET', 'POST'])
 def _showStudents():
     if request.method == 'POST':
@@ -28,6 +28,7 @@ def _showStudents():
     students = getAllStudents()
     return render_template('allstudents.html', students=students)
 
+# Student Details
 @app.route('/students/<int:studentId>')
 def _studentDetails(studentId):
     student = getStudentById(studentId)
@@ -36,7 +37,7 @@ def _studentDetails(studentId):
     payments = getStudentPayments(studentId)
     return render_template('student.html', student=student, notes=notes, grades=grades, payments=payments)
 
-
+# New Student
 @app.route('/students/new', methods=['GET', 'POST'])
 def _newStudent():
     fathers = getAllFathers()
@@ -75,7 +76,7 @@ def _newStudent():
             return redirect(url_for('_showIndex'))
 
 
-
+# Edit Student
 @app.route('/students/<int:studentId>/edit', methods=['GET', 'POST'])
 def _editStudent(studentId):
     student = getStudentById(studentId)
@@ -106,7 +107,7 @@ def _editStudent(studentId):
         else:
             return redirect(url_for('_showIndex'))
 
-
+# Delete Student
 @app.route('/students/<int:studentId>/delete', methods=['GET', 'POST'])
 def _deleteStudent(studentId):
     student = getStudentById(studentId)
@@ -124,12 +125,7 @@ def _deleteStudent(studentId):
         else:
             return redirect(url_for('_showIndex'))
 
-
-@app.route('/students/<int:studentId>/grades')
-def _showStudentGrades(studentId):
-    return "Student ID " + str(studentId) + " Grades"
-
-
+# Add Grade
 @app.route('/students/<int:studentId>/grades/new', methods=['GET', 'POST'])
 def _addStudentGrades(studentId):
     student = getStudentById(studentId)
@@ -151,7 +147,7 @@ def _addStudentGrades(studentId):
 
         return redirect(url_for('_studentDetails',studentId= studentId))
 
-
+# Edit Grade
 @app.route('/students/<int:studentId>/grades/<int:gradesId>/edit', methods=['GET', 'POST'])
 def _editStudentGrades(studentId, gradesId):
     student = getStudentById(studentId)
@@ -175,7 +171,7 @@ def _editStudentGrades(studentId, gradesId):
 
         return redirect(url_for('_studentDetails', studentId=studentId))
 
-
+# Delete Grade
 @app.route('/students/<int:studentId>/grades/<int:gradesId>/delete', methods=['GET', 'POST'])
 def _deleteStudentGrades(studentId, gradesId):
     student = getStudentById(studentId)
@@ -189,12 +185,7 @@ def _deleteStudentGrades(studentId, gradesId):
 
         return redirect(url_for('_studentDetails', studentId=studentId))
 
-
-@app.route('/students/<int:studentId>/notes')
-def _showStudentNotes(studentId):
-    return "Student ID " + str(studentId) + " Notes"
-
-
+# Add Notes
 @app.route('/students/<int:studentId>/notes/new', methods=['GET', 'POST'])
 def _addStudentNotes(studentId):
     student = getStudentById(studentId)
@@ -216,7 +207,7 @@ def _addStudentNotes(studentId):
 
         return redirect(url_for('_studentDetails',studentId= studentId))
 
-
+# Edit Notes
 @app.route('/students/<int:studentId>/notes/<int:notesId>/edit', methods=['GET', 'POST'])
 def _editStudentNotes(studentId, notesId):
     student = getStudentById(studentId)
@@ -239,7 +230,7 @@ def _editStudentNotes(studentId, notesId):
 
         return redirect(url_for('_studentDetails', studentId=studentId))
 
-
+# Delete Notes
 @app.route('/students/<int:studentId>/notes/<int:notesId>/delete', methods=['GET', 'POST'])
 def _deleteStudentNotes(studentId, notesId):
     student = getStudentById(studentId)
@@ -253,11 +244,7 @@ def _deleteStudentNotes(studentId, notesId):
 
         return redirect(url_for('_studentDetails', studentId=studentId))
 
-@app.route('/students/<int:studentId>/payments')
-def _showStudentPayments(studentId):
-    return "Student ID " + str(studentId) + " Payments"
-
-
+# Add Payment
 @app.route('/students/<int:studentId>/payments/new', methods=['GET', 'POST'])
 def _addStudentPayments(studentId):
     student = getStudentById(studentId)
@@ -279,6 +266,7 @@ def _addStudentPayments(studentId):
 
         return redirect(url_for('_studentDetails', studentId=studentId))
 
+# Edit Payment
 @app.route('/students/<int:studentId>/payments/<int:paymentsId>/edit', methods=['GET', 'POST'])
 def _editStudentPayments(studentId, paymentsId):
     student = getStudentById(studentId)
@@ -301,7 +289,7 @@ def _editStudentPayments(studentId, paymentsId):
 
         return redirect(url_for('_studentDetails', studentId=studentId))
 
-
+# Delete Payment
 @app.route('/students/<int:studentId>/payments/<int:paymentsId>/delete', methods=['GET', 'POST'])
 def _deleteStudentPayments(studentId, paymentsId):
     student = getStudentById(studentId)
@@ -315,7 +303,7 @@ def _deleteStudentPayments(studentId, paymentsId):
 
         return redirect(url_for('_studentDetails', studentId=studentId))
 
-
+# Add Parent
 @app.route('/parents/new', methods=['GET', 'POST'])
 def _newParent():
     if request.method == 'GET':
