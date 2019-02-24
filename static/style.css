@@ -44,3 +44,10 @@ body{
 .flashes{
 	color: red;
 }
+
+.login-img{
+	height: 50%;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}

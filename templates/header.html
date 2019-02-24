@@ -1,6 +1,14 @@
 <header class="header">
   <img class="header-img" src="{{url_for('static', filename='img/header.jpg')}}">
-
+  {% if current_user.is_anonymous %}
+      <a href="{{ url_for('_login') }}">
+      <img class="login-img" src="{{ url_for('static', filename='img/login.png') }}">
+      </a>
+  {% else %}
+      <a href="{{ url_for('_logout') }}">
+      <img class="login-img" src="{{ url_for('static', filename='img/logout.jpg') }}">
+      </a>
+  {% endif %}
 	<!-- Menu -->
 	<nav class="navbar navbar-expand-lg navbar-light menu">
   <a class="navbar-brand text-white" href="{{url_for('_getCV')}}">Mr. Abdulhady</a>

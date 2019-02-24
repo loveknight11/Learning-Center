@@ -3,9 +3,11 @@ from flask import *
 from config import Config
 from database_functions import *
 from datetime import datetime
+from flask_login import LoginManager, current_user, login_user
 
 app = Flask(__name__)
 app.config.from_object(Config)
+login = LoginManager(app)
 
 
 # Main Page
@@ -392,9 +394,13 @@ def _getCV():
 
 
 @app.route('/login', methods=['GET', 'POST'])
-def login():
+def _login():
     if request.method == 'GET':
         return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    return render_template('index.html')
 
 
 @app.route('/parents/json')
