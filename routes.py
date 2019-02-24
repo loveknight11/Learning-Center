@@ -354,6 +354,11 @@ def _editParent(parentId):
             email = request.form.get('email')
             notes = request.form.get('notes')
             sex = request.form.get('sex')
+            username = request.form.get('username')
+
+            if not checkEditUsernameAvailable(parent.id, username):
+                flash('User Name Already Exists')
+                return render_template('editparent.html', parent=parent)
 
             if parent.name != name:
                 editStudentParentName(parent.name, name)

@@ -56,6 +56,13 @@ def checkUsernameAvailable(username):
         return True
 
 
+def checkEditUsernameAvailable(id, username):
+    result = session.query(Parents).filter(and_(Parents.username == username, Parents.id != id)).first()
+    if result:
+        return False
+    else:
+        return True
+
 def addNewParent(name, sex, mobile, address, job, email, notes, username, password):
     newParent = Parents(name = name,
                 sex = sex,
