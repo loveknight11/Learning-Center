@@ -7,9 +7,17 @@ from passlib.apps import custom_app_context as pwd_context
 import random
 import string
 import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+from routes import login
+
 
 Base = declarative_base()
 secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
+
+@login.user_loader
+def load_user(id):
+    return Parents.query.get(int(id))
 
 class Students(Base):
     __tablename__ = 'students'
@@ -34,7 +42,7 @@ class Students(Base):
         }
 
 
-class Parents(Base):
+class Parents(UserMixin, Base):
     __tablename__ = 'parents'
     id = Column(Integer, primary_key=True)
     name = Column(String)
@@ -44,6 +52,14 @@ class Parents(Base):
     email = Column(String)
     notes = Column(String)
     sex = Column(String)
+    username = Column(String)
+    password_hash = Column(String)
+
+    def set_password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
 
     @property

@@ -1,8 +1,7 @@
 from config import Config
 from sqlalchemy import *
-from database import Base, Students, Parents, Grades, Notes, Payments
+from database import *
 from sqlalchemy.orm import sessionmaker
-from routes import app
 
 
 
@@ -49,14 +48,24 @@ def editParent(id, name, mobile, address, job, email, notes, sex):
     session.commit()
 
 
-def addNewParent(name, sex, mobile, address, job, email, notes):
+def checkUsernameAvailable(username):
+    result = session.query(Parents).filter_by(username=username).first()
+    if result:
+        return False
+    else:
+        return True
+
+
+def addNewParent(name, sex, mobile, address, job, email, notes, username, password):
     newParent = Parents(name = name,
                 sex = sex,
                 mobile = mobile,
                 address = address,
                 job = job,
                 email = email,
-                notes = notes)
+                notes = notes,
+                username=username)
+    newParent.set_password(password)
     session.add(newParent)
     session.commit()
 

@@ -8,11 +8,11 @@
 		<form method="post">
 			<div class="form-group">
 				<label for="name">Name</label>
-				<input class="form-control" type="text" name="name" id="name">
+				<input class="form-control" type="text" name="name" id="name" value="{{ name }}">
 			</div>
 			<div class="form-group">
 				<label for="sex">Sex</label>
-				<input class="form-control" type="text" name="sex" id="sex" list="sex-list">
+				<input class="form-control" type="text" name="sex" id="sex" list="sex-list" value="{{ sex }}">
 				<datalist id="sex-list">
 					<option value="Male"></option>
 					<option value="Female"></option>
@@ -20,23 +20,31 @@
 			</div>
 			<div class="form-group">
 				<label for="mobile">Mobile</label>
-				<input class="form-control" type="text" name="mobile" id="mobile">
+				<input class="form-control" type="text" name="mobile" id="mobile" value="{{ mobile }}">
 			</div>
 			<div class="form-group">
 				<label for="address">Address</label>
-				<textarea class="form-control" name="address" id="address" rows="3"></textarea>
+				<textarea class="form-control" name="address" id="address" rows="3">{{ address }}</textarea>
 			</div>
 			<div class="form-group">
 				<label for="job">Job</label>
-				<input class="form-control" type="text" name="job" id="job">
+				<input class="form-control" type="text" name="job" id="job" value="{{ job }}">
 			</div>
 			<div class="form-group">
 				<label for="email">E-mail</label>
-				<input class="form-control" type="email" name="email" id="email">
+				<input class="form-control" type="email" name="email" id="email" value="{{ email }}">
 			</div>
 			<div class="form-group">
 				<label for="notes">Notes</label>
-				<textarea class="form-control" name="notes" id="notes" rows="3"></textarea>
+				<textarea class="form-control" name="notes" id="notes" rows="3">{{ notes }}</textarea>
+			</div>
+            <div class="form-group">
+				<label for="username">User Name</label>
+				<input class="form-control" type="text" name="username" id="username">
+			</div>
+            <div class="form-group">
+				<label for="password">Password</label>
+				<input class="form-control" type="text" name="password" id="password">
 			</div>
 			<button type="submit" class="btn btn-primary" name="submit" value="save">Save</button>
 			<button type="submit" class="btn btn-secondary" name="submit" value="cancel">Cancel</button>

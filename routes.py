@@ -1,7 +1,7 @@
 import sys
 from flask import *
 from config import Config
-from database_functions import *
+
 from datetime import datetime
 from flask_login import LoginManager, current_user, login_user
 
@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config.from_object(Config)
 login = LoginManager(app)
 
-
+from database_functions import *
 # Main Page
 @app.route('/')
 def _showIndex():
@@ -319,9 +319,22 @@ def _newParent():
             job = request.form.get('job')
             email = request.form.get('email')
             notes = request.form.get('notes')
-            addNewParent(name=name, sex=sex, mobile=mobile, address=address, job=job, email=email, notes=notes)
-            flash('Parent Added Successfully')
-            return redirect(url_for('_showIndex'))
+            username = request.form.get('username')
+            password = request.form.get('password')
+            if checkUsernameAvailable(username):
+                addNewParent(name=name, sex=sex, mobile=mobile, address=address, job=job, email=email, notes=notes, username=username, password=password)
+                flash('Parent Added Successfully')
+                return redirect(url_for('_showIndex'))
+            else:
+                flash('User Name Already Exists')
+                render_template('newparent.html',
+                                name=name,
+                                sex=sex,
+                                mobile=mobile,
+                                address=address,
+                                job=job,
+                                email=email,
+                                notes=notes)
         else :
             return redirect(url_for('_showIndex'))
 
