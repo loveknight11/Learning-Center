@@ -1,8 +1,12 @@
+from config import Config
 from sqlalchemy import *
 from database import Base, Students, Parents, Grades, Notes, Payments
 from sqlalchemy.orm import sessionmaker
+from routes import app
 
-engine = create_engine('sqlite:///db.db',
+
+
+engine = create_engine(Config.SQLALCHEMY_DATABASE_URI,
                        connect_args={'check_same_thread': False})
 Base.metadata.bind = engine
 

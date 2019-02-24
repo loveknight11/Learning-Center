@@ -1,11 +1,12 @@
 import sys
 from flask import *
-import random, string
+from config import Config
 from database_functions import *
 from datetime import datetime
 
 app = Flask(__name__)
-secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
+app.config.from_object(Config)
+
 
 # Main Page
 @app.route('/')
@@ -416,5 +417,4 @@ def getStudentsJson():
 
 if __name__ == '__main__':
     app.debug = True
-    app.secret_key = secret_key
     app.run(host='0.0.0.0', port='5000')
