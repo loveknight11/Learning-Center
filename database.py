@@ -54,6 +54,7 @@ class Parents(UserMixin, db.Model, Base):
     sex = Column(String)
     username = Column(String)
     password_hash = Column(String)
+    admin = Column(Integer, default=0)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

@@ -80,15 +80,15 @@ def addNewParent(name, sex, mobile, address, job, email, notes, username, passwo
 
 
 def getAllParents():
-    return session.query(Parents).all()
+    return session.query(Parents).filter(Parents.admin != 1).all()
 
 
 def getAllFathers():
-    return session.query(Parents).filter_by(sex='Male').all()
+    return session.query(Parents).filter(and_(Parents.sex == 'Male', Parents.admin != 1)).all()
 
 
 def getAllMothers():
-    return session.query(Parents).filter_by(sex='Female').all()
+    return session.query(Parents).filter(and_(Parents.sex == 'Female', Parents.admin != 1)).all()
 
 
 def getAllStudents():
@@ -97,7 +97,6 @@ def getAllStudents():
 
 def checkParent(parentName):
     parent = session.query(Parents).filter_by(name=parentName).first()
-    print(parent)
     if parent is None:
         return False
     else:
