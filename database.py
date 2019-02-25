@@ -9,15 +9,15 @@ import string
 import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from routes import login
+from routes import login, db
+
 
 
 Base = declarative_base()
 secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
 
-@login.user_loader
-def load_user(id):
-    return Parents.query.get(int(id))
+
+
 
 class Students(Base):
     __tablename__ = 'students'
@@ -42,7 +42,7 @@ class Students(Base):
         }
 
 
-class Parents(UserMixin, Base):
+class Parents(UserMixin, db.Model, Base):
     __tablename__ = 'parents'
     id = Column(Integer, primary_key=True)
     name = Column(String)
@@ -74,6 +74,13 @@ class Parents(UserMixin, Base):
                 'notes': self.notes,
                 'sex': self.sex
         }
+
+
+    @login.user_loader
+    def load_user(id):
+        return Parents.query.get(int(id))
+
+
 
 class Grades(Base):
     __tablename__ = 'grades'

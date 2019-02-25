@@ -1,12 +1,13 @@
 import sys
 from flask import *
 from config import Config
-
 from datetime import datetime
-from flask_login import LoginManager, current_user, login_user
+from flask_login import LoginManager, current_user, login_user, logout_user
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.config.from_object(Config)
+db = SQLAlchemy(app)
 login = LoginManager(app)
 
 from database_functions import *
@@ -414,10 +415,24 @@ def _getCV():
 @app.route('/login', methods=['GET', 'POST'])
 def _login():
     if request.method == 'GET':
+        if current_user.is_authenticated:
+            return render_template('index.html')
         return render_template('login.html')
+    else:
+        username = request.form.get('username')
+        password = request.form.get('password')
+        parent = getParentByUsername(username)
+        if parent is None or not parent.check_password(password=password):
+            flash('Wrong Username or password')
+            return render_template('login.html')
+        else:
+            flash('Welcome ' + parent.name)
+            login_user(parent)
+            return render_template('index.html')
 
 @app.route('/logout')
-def logout():
+def _logout():
+    logout_user()
     return render_template('index.html')
 
 

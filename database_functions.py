@@ -5,12 +5,14 @@ from sqlalchemy.orm import sessionmaker
 
 
 
+
 engine = create_engine(Config.SQLALCHEMY_DATABASE_URI,
                        connect_args={'check_same_thread': False})
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
 
 def addNewStudent(name, mobile, email, notes, father, mother):
     newStudent = Students(name = name,
@@ -109,6 +111,10 @@ def getStudentByName(name):
 
 def getParentByName(name):
     return session.query(Parents).filter_by(name=name).all()
+
+
+def getParentByUsername(username):
+    return session.query(Parents).filter_by(username=username).first()
 
 
 def getStudentById(id):
