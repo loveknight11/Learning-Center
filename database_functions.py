@@ -2,13 +2,14 @@ from config import Config
 from sqlalchemy import *
 from database import *
 from sqlalchemy.orm import sessionmaker
+from routes import current_user
 
 
 
 
 engine = create_engine(Config.SQLALCHEMY_DATABASE_URI,
                        connect_args={'check_same_thread': False})
-Base.metadata.bind = engine
+#Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
@@ -92,6 +93,8 @@ def getAllMothers():
 
 
 def getAllStudents():
+    if current_user.admin != 1:
+        return session.query(Students).filter(or_(Students.father == current_user.name, Students.mother == current_user.name))
     return session.query(Students).all()
 
 
@@ -104,8 +107,10 @@ def checkParent(parentName):
 
 
 def getStudentByName(name):
-    student = session.query(Students).filter_by(name=name).first()
-    return student
+    if current_user.admin != 1:
+        return session.query(Students).filter(and_(Students.name == name , or_(Students.father == current_user.name, Students.mother == current_user.name)))
+    return session.query(Students).filter_by(name=name).first()
+
 
 
 def getParentByName(name):

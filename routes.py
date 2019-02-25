@@ -325,7 +325,7 @@ def _deleteStudentPayments(studentId, paymentsId):
 
 # Add Parent
 @app.route('/parents/new', methods=['GET', 'POST'])
-@login_required
+#@login_required
 def _newParent():
     if request.method == 'GET':
         return render_template('newparent.html')

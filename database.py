@@ -13,21 +13,21 @@ from routes import login, db
 
 
 
-Base = declarative_base()
+#Base = declarative_base()
 secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in range(32))
 
 
+db.metadata.clear()
 
-
-class Students(Base):
+class Students(db.Model):
     __tablename__ = 'students'
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    mobile = Column(String)
-    email = Column(String)
-    notes = Column(String)
-    father = Column(Integer, ForeignKey('parents.name'))
-    mother = Column(Integer, ForeignKey('parents.name'))
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    mobile = db.Column(db.String)
+    email = db.Column(db.String)
+    notes = db.Column(db.String)
+    father = db.Column(db.String)
+    mother = db.Column(db.String)
 
     @property
     def serialize(self):
@@ -42,19 +42,19 @@ class Students(Base):
         }
 
 
-class Parents(UserMixin, db.Model, Base):
+class Parents(UserMixin, db.Model):
     __tablename__ = 'parents'
-    id = Column(Integer, primary_key=True)
-    name = Column(String)
-    mobile = Column(String)
-    address = Column(String)
-    job = Column(String)
-    email = Column(String)
-    notes = Column(String)
-    sex = Column(String)
-    username = Column(String)
-    password_hash = Column(String)
-    admin = Column(Integer, default=0)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    mobile = db.Column(db.String)
+    address = db.Column(db.String)
+    job = db.Column(db.String)
+    email = db.Column(db.String)
+    notes = db.Column(db.String)
+    sex = db.Column(db.String)
+    username = db.Column(db.String)
+    password_hash = db.Column(db.String)
+    admin = db.Column(db.Integer, default=0)
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -83,32 +83,32 @@ class Parents(UserMixin, db.Model, Base):
 
 
 
-class Grades(Base):
+class Grades(db.Model):
     __tablename__ = 'grades'
-    id = Column(Integer, primary_key=True)
-    student_id = Column(Integer, ForeignKey('students.id'))
-    grade = Column(String)
-    date = Column(DateTime, default=datetime.datetime.now)
-    notes = Column(String)
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, ForeignKey('students.id'))
+    grade = db.Column(db.String)
+    date = db.Column(db.DateTime, default=datetime.datetime.now)
+    notes = db.Column(db.String)
 
 
-class Notes(Base):
+class Notes(db.Model):
     __tablename__ = 'notes'
-    id = Column(Integer, primary_key=True)
-    student_id = Column(Integer, ForeignKey('students.id'))
-    note = Column(String)
-    date = Column(DateTime, default=datetime.datetime.now)
-    notes = Column(String)
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, ForeignKey('students.id'))
+    note = db.Column(db.String)
+    date = db.Column(db.DateTime, default=datetime.datetime.now)
+    notes = db.Column(db.String)
 
 
-class Payments(Base):
+class Payments(db.Model):
     __tablename__ = 'payments'
-    id = Column(Integer, primary_key=True)
-    student_id = Column(Integer, ForeignKey('students.id'))
-    payment = Column(String)
-    date = Column(DateTime, default=datetime.datetime.now)
-    notes = Column(String)
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, ForeignKey('students.id'))
+    payment = db.Column(db.String)
+    date = db.Column(db.DateTime, default=datetime.datetime.now)
+    notes = db.Column(db.String)
 
 
 engine = create_engine('sqlite:///db.db', connect_args={'check_same_thread': False}, poolclass=StaticPool)
-Base.metadata.create_all(engine)
+db.metadata.create_all(engine)
