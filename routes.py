@@ -2,13 +2,16 @@ import sys
 from flask import *
 from config import Config
 from datetime import datetime
-from flask_login import LoginManager, current_user, login_user, logout_user
+from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from flask_sqlalchemy import SQLAlchemy
+from werkzeug.urls import url_parse
 
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 login = LoginManager(app)
+login.login_view = '_login'
+
 
 from database_functions import *
 # Main Page
@@ -18,6 +21,7 @@ def _showIndex():
 
 # All Students
 @app.route('/students', methods=['GET', 'POST'])
+@login_required
 def _showStudents():
     if request.method == 'POST':
         name = request.form.get('search')
@@ -34,6 +38,7 @@ def _showStudents():
 
 # Student Details
 @app.route('/students/<int:studentId>')
+@login_required
 def _studentDetails(studentId):
     student = getStudentById(studentId)
     grades = getStudentGrades(studentId)
@@ -43,6 +48,7 @@ def _studentDetails(studentId):
 
 # New Student
 @app.route('/students/new', methods=['GET', 'POST'])
+@login_required
 def _newStudent():
     fathers = getAllFathers()
     mothers = getAllMothers()
@@ -82,6 +88,7 @@ def _newStudent():
 
 # Edit Student
 @app.route('/students/<int:studentId>/edit', methods=['GET', 'POST'])
+@login_required
 def _editStudent(studentId):
     student = getStudentById(studentId)
     if request.method == 'GET':
@@ -112,6 +119,7 @@ def _editStudent(studentId):
 
 # Delete Student
 @app.route('/students/<int:studentId>/delete', methods=['GET', 'POST'])
+@login_required
 def _deleteStudent(studentId):
     student = getStudentById(studentId)
     if request.method == 'GET':
@@ -130,6 +138,7 @@ def _deleteStudent(studentId):
 
 # Add Grade
 @app.route('/students/<int:studentId>/grades/new', methods=['GET', 'POST'])
+@login_required
 def _addStudentGrades(studentId):
     student = getStudentById(studentId)
     if request.method == 'GET':
@@ -152,6 +161,7 @@ def _addStudentGrades(studentId):
 
 # Edit Grade
 @app.route('/students/<int:studentId>/grades/<int:gradesId>/edit', methods=['GET', 'POST'])
+@login_required
 def _editStudentGrades(studentId, gradesId):
     student = getStudentById(studentId)
     grade = getGrade(gradesId)
@@ -176,6 +186,7 @@ def _editStudentGrades(studentId, gradesId):
 
 # Delete Grade
 @app.route('/students/<int:studentId>/grades/<int:gradesId>/delete', methods=['GET', 'POST'])
+@login_required
 def _deleteStudentGrades(studentId, gradesId):
     student = getStudentById(studentId)
     grade = getGrade(gradesId)
@@ -190,6 +201,7 @@ def _deleteStudentGrades(studentId, gradesId):
 
 # Add Notes
 @app.route('/students/<int:studentId>/notes/new', methods=['GET', 'POST'])
+@login_required
 def _addStudentNotes(studentId):
     student = getStudentById(studentId)
     if request.method == 'GET':
@@ -212,6 +224,7 @@ def _addStudentNotes(studentId):
 
 # Edit Notes
 @app.route('/students/<int:studentId>/notes/<int:notesId>/edit', methods=['GET', 'POST'])
+@login_required
 def _editStudentNotes(studentId, notesId):
     student = getStudentById(studentId)
     note = getNote(notesId)
@@ -235,6 +248,7 @@ def _editStudentNotes(studentId, notesId):
 
 # Delete Notes
 @app.route('/students/<int:studentId>/notes/<int:notesId>/delete', methods=['GET', 'POST'])
+@login_required
 def _deleteStudentNotes(studentId, notesId):
     student = getStudentById(studentId)
     note = getNote(notesId)
@@ -249,6 +263,7 @@ def _deleteStudentNotes(studentId, notesId):
 
 # Add Payment
 @app.route('/students/<int:studentId>/payments/new', methods=['GET', 'POST'])
+@login_required
 def _addStudentPayments(studentId):
     student = getStudentById(studentId)
     if request.method == 'GET':
@@ -271,6 +286,7 @@ def _addStudentPayments(studentId):
 
 # Edit Payment
 @app.route('/students/<int:studentId>/payments/<int:paymentsId>/edit', methods=['GET', 'POST'])
+@login_required
 def _editStudentPayments(studentId, paymentsId):
     student = getStudentById(studentId)
     payment = getPayment(paymentsId)
@@ -294,6 +310,7 @@ def _editStudentPayments(studentId, paymentsId):
 
 # Delete Payment
 @app.route('/students/<int:studentId>/payments/<int:paymentsId>/delete', methods=['GET', 'POST'])
+@login_required
 def _deleteStudentPayments(studentId, paymentsId):
     student = getStudentById(studentId)
     payment = getPayment(paymentsId)
@@ -308,6 +325,7 @@ def _deleteStudentPayments(studentId, paymentsId):
 
 # Add Parent
 @app.route('/parents/new', methods=['GET', 'POST'])
+@login_required
 def _newParent():
     if request.method == 'GET':
         return render_template('newparent.html')
@@ -341,6 +359,7 @@ def _newParent():
 
 # Edit Parent
 @app.route('/parents/<int:parentId>/edit', methods=['GET', 'POST'])
+@login_required
 def _editParent(parentId):
     parent = getParentById(parentId)
     students = getStudentsForParent(parent.name)
@@ -375,6 +394,7 @@ def _editParent(parentId):
 
 # Delete Parent
 @app.route('/parents/<int:parentId>/delete', methods=['GET', 'POST'])
+@login_required
 def _deleteParent(parentId):
     parent = getParentById(parentId)
     students = getStudentsForParent(parent.name)
@@ -394,6 +414,7 @@ def _deleteParent(parentId):
 
 
 @app.route('/parents', methods=['GET', 'POST'])
+@login_required
 def _showAllParents():
     if request.method == 'POST':
         name = request.form.get('search')
@@ -428,15 +449,20 @@ def _login():
         else:
             flash('Welcome ' + parent.name)
             login_user(parent)
-            return render_template('index.html')
+            next_page = request.args.get('next')
+            if not next_page or url_parse(next_page).netloc != '':
+                next_page = url_for('_showIndex')
+            return redirect(next_page)
 
 @app.route('/logout')
+@login_required
 def _logout():
     logout_user()
     return render_template('index.html')
 
 
 @app.route('/parents/json')
+@login_required
 def getParentsJson():
     parents = getAllParents()
     return jsonify([parent.serialize for parent in parents])
@@ -444,18 +470,21 @@ def getParentsJson():
 
 
 @app.route('/fathers/json')
+@login_required
 def getFathersJson():
     fathers = getAllFathers()
     return jsonify([father.serialize for father in fathers])
 
 
 @app.route('/mothers/json')
+@login_required
 def getMothersJson():
     mothers = getAllMothers()
     return jsonify([mother.serialize for mother in mothers])
 
 
 @app.route('/students/json')
+@login_required
 def getStudentsJson():
     students = getAllStudents()
     return jsonify([student.serialize for student in students])
