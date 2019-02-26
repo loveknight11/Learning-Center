@@ -6,7 +6,8 @@ from flask_login import LoginManager, current_user, login_user, logout_user, log
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.urls import url_parse
-
+from database_functions import *
+from models import *
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -16,8 +17,10 @@ login = LoginManager(app)
 login.login_view = '_login'
 
 
-from database_functions import *
-from models import *
+@login.user_loader
+def load_user(id):
+    return Users.query.get(int(id))
+
 
 # Main Page
 @app.route('/')
@@ -447,13 +450,13 @@ def _login():
     else:
         username = request.form.get('username')
         password = request.form.get('password')
-        parent = getParentByUsername(username)
-        if parent is None or not parent.check_password(password=password):
+        user = getUserByUsername(username)
+        if user is None or not user.check_password(password=password):
             flash('Wrong Username or password')
             return render_template('login.html')
         else:
-            flash('Welcome ' + parent.name)
-            login_user(parent)
+            flash('Welcome ' + user.username)
+            login_user(user)
             next_page = request.args.get('next')
             if not next_page or url_parse(next_page).netloc != '':
                 next_page = url_for('_showIndex')

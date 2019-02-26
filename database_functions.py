@@ -23,6 +23,15 @@ def addNewStudent(name, mobile, email, notes, father, mother):
             father = father,
             mother = mother)
     session.add(newStudent)
+    session.flush()
+
+    f = session.query(Parents).filter_by(name=father).first()
+    m = session.query(Parents).filter_by(name=mother).first()
+    f.students.append(newStudent)
+    m.students.append(newStudent)
+    print(f.name)
+    session.add(f)
+    session.add(m)
     session.commit()
 
 
@@ -60,7 +69,7 @@ def checkUsernameAvailable(username):
 
 
 def checkEditUsernameAvailable(id, username):
-    result = session.query(Parents).filter(and_(Parents.username == username, Parents.id != id)).first()
+    result = session.query(Users).filter(and_(Users.username == username, Users.id != id)).first()
     if result:
         return False
     else:
@@ -85,20 +94,22 @@ def addNewParent(name, sex, mobile, address, job, email, notes, username, passwo
 
 
 def getAllParents():
-    return session.query(Parents).filter(Parents.admin != 1).all()
+    return session.query(Parents).all()
 
 
 def getAllFathers():
-    return session.query(Parents).filter(and_(Parents.sex == 'Male', Parents.admin != 1)).all()
+    return session.query(Parents).filter_by(sex = 'Male').all()
 
 
 def getAllMothers():
-    return session.query(Parents).filter(and_(Parents.sex == 'Female', Parents.admin != 1)).all()
+    return session.query(Parents).filter_by(sex = 'Female').all()
 
 
 def getAllStudents():
     if current_user.admin != 1:
-        return session.query(Students).filter(or_(Students.father == current_user.name, Students.mother == current_user.name))
+        #return session.query(Students).filter(or_(Students.father == current_user.name, Students.mother == current_user.name))
+        parent = session.query(Parents).filter_by(id = current_user.parent_id).first()
+        return parent.students
     return session.query(Students).all()
 
 
@@ -121,8 +132,10 @@ def getParentByName(name):
     return session.query(Parents).filter_by(name=name).all()
 
 
-def getParentByUsername(username):
-    return session.query(Parents).filter_by(username=username).first()
+def getUserByUsername(username):
+    user = session.query(Users).filter_by(username=username).first()
+    print(user.username)
+    return user
 
 
 def getStudentById(id):
@@ -189,7 +202,9 @@ def deletePayment(paymentsId):
     session.commit()
 
 def getStudentsForParent(parentName):
-    return session.query(Students).filter(or_(Students.father==parentName, Students.mother==parentName)).all()
+    #return session.query(Students).filter(or_(Students.father==parentName, Students.mother==parentName)).all()
+    parent = session.query(Parents).filter_by(name = parentName).first()
+    return parent.students
 
 
 def deleteParent(parentId):

@@ -1,6 +1,7 @@
-from routes import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from routes import db
+from routes import login
 
 
 
@@ -17,9 +18,10 @@ class Users(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-@login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+    # @login.user_loader
+    # def load_user(id):
+    #     return Users.query.get(int(id))
+
 
 
 parentStudent = db.Table('parentStudent',
