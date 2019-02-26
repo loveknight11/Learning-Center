@@ -1,18 +1,18 @@
 from config import Config
 from sqlalchemy import *
-from database import *
+from models import *
 from sqlalchemy.orm import sessionmaker
-from routes import current_user
+from routes import current_user, db
 
 
 
 
-engine = create_engine(Config.SQLALCHEMY_DATABASE_URI,
-                       connect_args={'check_same_thread': False})
+#engine = create_engine(Config.SQLALCHEMY_DATABASE_URI,
+#                      connect_args={'check_same_thread': False})
 #Base.metadata.bind = engine
 
-DBSession = sessionmaker(bind=engine)
-session = DBSession()
+#DBSession = sessionmaker(bind=engine)
+session = db.session()
 
 
 def addNewStudent(name, mobile, email, notes, father, mother):
@@ -52,7 +52,7 @@ def editParent(id, name, mobile, address, job, email, notes, sex):
 
 
 def checkUsernameAvailable(username):
-    result = session.query(Parents).filter_by(username=username).first()
+    result = session.query(Users).filter_by(username=username).first()
     if result:
         return False
     else:
@@ -73,10 +73,14 @@ def addNewParent(name, sex, mobile, address, job, email, notes, username, passwo
                 address = address,
                 job = job,
                 email = email,
-                notes = notes,
-                username=username)
-    newParent.set_password(password)
+                notes = notes)
     session.add(newParent)
+    session.flush()
+    if username:
+        newUser = Users(username=username,
+            parent_id=newParent.id)
+        newUser.set_password(password)
+        session.add(newUser)
     session.commit()
 
 
