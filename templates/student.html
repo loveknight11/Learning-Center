@@ -16,8 +16,10 @@
             <p><span class="text-primary">Notes  : </span>{{ student.notes }}</p>
             <p><span class="text-primary">Father : </span>{{ student.father }}</p>
             <p><span class="text-primary">Mother : </span>{{ student.mother }}</p>
-            <a class="btn btn-info" href="{{ url_for('_editStudent', studentId=student.id) }}">Edit</a>
-            <a class="btn btn-danger" href="{{ url_for('_deleteStudent', studentId=student.id) }}">Delete</a>
+            {% if current_user.admin == 1 %}
+                <a class="btn btn-info" href="{{ url_for('_editStudent', studentId=student.id) }}">Edit</a>
+                <a class="btn btn-danger" href="{{ url_for('_deleteStudent', studentId=student.id) }}">Delete</a>
+            {% endif %}
         </div>
     </div>
 
@@ -28,11 +30,15 @@
                 <p><span class="text-primary">Date   : </span>{{ grade.date }}</p>
                 <p><span class="text-primary">Grade  : </span>{{ grade.grade }}</p>
                 <p><span class="text-primary">Notes  : </span>{{ grade.notes }}</p>
-                <a class="btn btn-info" href="{{ url_for('_editStudentGrades', studentId=student.id, gradesId=grade.id) }}">Edit</a>
-                <a class="btn btn-danger" href="{{ url_for('_deleteStudentGrades', studentId=student.id, gradesId=grade.id) }}">Delete</a>
+                {% if current_user.admin == 1 %}
+                    <a class="btn btn-info" href="{{ url_for('_editStudentGrades', studentId=student.id, gradesId=grade.id) }}">Edit</a>
+                    <a class="btn btn-danger" href="{{ url_for('_deleteStudentGrades', studentId=student.id, gradesId=grade.id) }}">Delete</a>
+                {% endif %}
                 <hr>
             {% endfor %}
-            <a class="btn btn-success" href="{{ url_for('_addStudentGrades', studentId=student.id) }}">Add Grade</a>
+            {% if current_user.admin == 1 %}
+                <a class="btn btn-success" href="{{ url_for('_addStudentGrades', studentId=student.id) }}">Add Grade</a>
+            {% endif %}
         </div>
     </div>
 
@@ -43,11 +49,15 @@
                 <p><span class="text-primary">Date   : </span>{{ note.date }}</p>
                 <p><span class="text-primary">Note   : </span>{{ note.note }}</p>
                 <p><span class="text-primary">Notes  : </span>{{ note.notes }}</p>
-                <a class="btn btn-info" href="{{ url_for('_editStudentNotes', studentId=student.id, notesId=note.id) }}">Edit</a>
-                <a class="btn btn-danger" href="{{ url_for('_deleteStudentNotes', studentId=student.id, notesId=note.id) }}">Delete</a>
+                {% if current_user.admin == 1 %}
+                    <a class="btn btn-info" href="{{ url_for('_editStudentNotes', studentId=student.id, notesId=note.id) }}">Edit</a>
+                    <a class="btn btn-danger" href="{{ url_for('_deleteStudentNotes', studentId=student.id, notesId=note.id) }}">Delete</a>
+                {% endif %}
                 <hr>
             {% endfor %}
-            <a class="btn btn-success" href="{{ url_for('_addStudentNotes', studentId=student.id) }}">Add Note</a>
+            {% if current_user.admin == 1 %}
+                <a class="btn btn-success" href="{{ url_for('_addStudentNotes', studentId=student.id) }}">Add Note</a>
+            {% endif %}
         </div>
     </div>
 
@@ -58,11 +68,15 @@
                 <p><span class="text-primary">Date   : </span>{{ payment.date }}</p>
                 <p><span class="text-primary">Payment   : </span>{{ payment.payment }}</p>
                 <p><span class="text-primary">Notes  : </span>{{ payment.notes }}</p>
-                <a class="btn btn-info" href="{{ url_for('_editStudentPayments', studentId=student.id, paymentsId=payment.id) }}">Edit</a>
-                <a class="btn btn-danger" href="{{ url_for('_deleteStudentPayments', studentId=student.id, paymentsId=payment.id) }}">Delete</a>
+                {% if current_user.admin == 1 %}
+                    <a class="btn btn-info" href="{{ url_for('_editStudentPayments', studentId=student.id, paymentsId=payment.id) }}">Edit</a>
+                    <a class="btn btn-danger" href="{{ url_for('_deleteStudentPayments', studentId=student.id, paymentsId=payment.id) }}">Delete</a>
+                {% endif %}
                 <hr>
             {% endfor %}
-            <a class="btn btn-success" href="{{ url_for('_addStudentPayments', studentId=student.id) }}">Add Payment</a>
+            {% if current_user.admin == 1 %}
+                <a class="btn btn-success" href="{{ url_for('_addStudentPayments', studentId=student.id) }}">Add Payment</a>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

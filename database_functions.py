@@ -1,7 +1,7 @@
 from config import Config
 from sqlalchemy import *
 from routes import current_user, db
-from models import Users, Parents, Notes, Payments, Grades
+from models import Users, Parents, Notes, Payments, Grades, Students
 
 
 
