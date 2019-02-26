@@ -42,6 +42,8 @@ def _showStudents():
             render_template('allstudents.html', students=students)
 
     students = getAllStudents()
+    for student in students:
+        print("name is " + student.name)
     return render_template('allstudents.html', students=students)
 
 # Student Details

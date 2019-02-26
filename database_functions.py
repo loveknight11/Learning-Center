@@ -107,9 +107,8 @@ def getAllMothers():
 
 def getAllStudents():
     if current_user.admin != 1:
-        #return session.query(Students).filter(or_(Students.father == current_user.name, Students.mother == current_user.name))
-        parent = session.query(Parents).filter_by(id = current_user.parent_id).first()
-        return parent.students
+        # return session.query(Students).filter(or_(Students.father == current_user.name, Students.mother == current_user.name))
+        return session.query(Parents).filter_by(id = current_user.parent_id).first().students
     return session.query(Students).all()
 
 
@@ -123,7 +122,8 @@ def checkParent(parentName):
 
 def getStudentByName(name):
     if current_user.admin != 1:
-        return session.query(Students).filter(and_(Students.name == name , or_(Students.father == current_user.name, Students.mother == current_user.name)))
+        return session.query(Parents).filter_by(id = current_user.parent_id).first().students
+        #return session.query(Students).filter(and_(Students.name == name , or_(Students.father == current_user.name, Students.mother == current_user.name)))
     return session.query(Students).filter_by(name=name).first()
 
 

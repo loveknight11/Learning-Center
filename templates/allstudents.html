@@ -21,7 +21,6 @@
 				</tr>
 			</thead>
 			<tbody id="my-table">
-				{% if students[1] %}
 				{% for student in students %}
 					<tr>
 						<th scope="row">{{student.id}}</th>
@@ -35,19 +34,6 @@
 						<td><a href="{{url_for('_deleteStudent', studentId=student.id)}}">Delete</a></td>
 					</tr>
 				{% endfor %}
-				{% else %}
-					<tr>
-						<th scope="row">{{students.id}}</th>
-						<td><a href="{{ url_for('_studentDetails', studentId=student.id) }}">{{student.name}}</a></td>
-						<td>{{students.mobile}}</td>
-						<td>{{students.email}}</td>
-						<td>{{students.notes}}</td>
-						<td>{{students.father}}</td>
-						<td>{{students.mother}}</td>
-						<td><a href="{{url_for('_editStudent', studentId=students.id)}}">Edit</a></td>
-						<td><a href="{{url_for('_deleteStudent', studentId=students.id)}}">Delete</a></td>
-					</tr>
-				{% endif %}
 			</tbody>
 		</table>
 	</div>
