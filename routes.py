@@ -119,7 +119,7 @@ def _editStudent(studentId):
             if not checkParent(mother):
                 flash("mother is not in our database, please add her info")
                 return render_template('editstudent.html', student=student)
-
+            
             editStudent(student.id, name, mobile, email, notes, father, mother)
             flash('Student Information Updated')
             students = getAllStudents()

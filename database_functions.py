@@ -29,14 +29,21 @@ def addNewStudent(name, mobile, email, notes, father, mother):
     m = session.query(Parents).filter_by(name=mother).first()
     f.students.append(newStudent)
     m.students.append(newStudent)
-    print(f.name)
     session.add(f)
     session.add(m)
     session.commit()
 
 
 def editStudent(id, name, mobile, email, notes, father, mother):
-    student = getStudentById(id=id)
+    student = getStudentById(id)
+    if father != student.father or mother != student.mother:
+        newFather = session.query(Parents).filter_by(name=father).first()
+        newMother = session.query(Parents).filter_by(name=mother).first()
+        student.parents = []
+        session.commit()
+        student.parents.append(newFather)
+        student.parents.append(newMother)
+
     student.name = name
     student.mobile = mobile
     student.email = email
