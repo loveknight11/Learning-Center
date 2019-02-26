@@ -1,8 +1,8 @@
 from config import Config
 from sqlalchemy import *
-from models import *
-from sqlalchemy.orm import sessionmaker
 from routes import current_user, db
+from models import Users, Parents, Notes, Payments, Grades
+
 
 
 

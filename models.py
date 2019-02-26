@@ -1,6 +1,7 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from routes import db
+import datetime
 
 
 
@@ -77,3 +78,28 @@ class Students(db.Model):
         }
 
 
+class Grades(db.Model):
+    __tablename__ = 'grades'
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
+    grade = db.Column(db.String)
+    date = db.Column(db.DateTime, default = datetime.datetime.now)
+    notes = db.Column(db.String)
+
+
+class Notes(db.Model):
+    __tablename__ = 'notes'
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
+    note = db.Column(db.String)
+    date = db.Column(db.DateTime, default=datetime.datetime.now)
+    notes = db.Column(db.String)
+
+
+class Payments(db.Model):
+    __tablename__ = 'payments'
+    id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'))
+    payment = db.Column(db.String)
+    date = db.Column(db.DateTime, default=datetime.datetime.now)
+    notes = db.Column(db.String)

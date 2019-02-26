@@ -6,8 +6,9 @@ from flask_login import LoginManager, current_user, login_user, logout_user, log
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from werkzeug.urls import url_parse
-from database_functions import *
-from models import *
+
+
+
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -16,11 +17,10 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = '_login'
 
-
+from database_functions import *
 @login.user_loader
 def load_user(id):
     return Users.query.get(int(id))
-
 
 # Main Page
 @app.route('/')
