@@ -136,9 +136,9 @@ def _deleteStudent(studentId):
         return render_template('deletestudent.html', student=student)
     else:
         if request.form['submit'] == 'delete':
-            deleteStudentGrades(studentId)
-            deleteStudentNotes(studentId)
-            deleteStudentPayments(studentId)
+            #deleteStudentGrades(studentId)
+            #deleteStudentNotes(studentId)
+            #deleteStudentPayments(studentId)
             deleteStudent(studentId)
             flash('All Student Data deleted')
             students = getAllStudents()

@@ -64,6 +64,9 @@ class Students(db.Model):
     notes = db.Column(db.String)
     father = db.Column(db.String)
     mother = db.Column(db.String)
+    all_grades = db.relationship('Grades', backref='student', lazy=True, cascade="all, delete-orphan")
+    all_notes = db.relationship('Notes', backref='student', lazy=True, cascade="all, delete-orphan")
+    all_payments = db.relationship('Payments', backref='student', lazy=True, cascade="all, delete-orphan")
 
     @property
     def serialize(self):
