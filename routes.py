@@ -112,11 +112,11 @@ def _editStudent(studentId):
             father = request.form.get('father')
             mother = request.form.get('mother')
             # check for father and mother in database
-            if not checkParent(father):
+            if (not checkParent(father) and father):
                 flash("father is not in our database, please add his info")
                 return render_template('editstudent.html', student=student)
 
-            if not checkParent(mother):
+            if (not checkParent(mother) and mother):
                 flash("mother is not in our database, please add her info")
                 return render_template('editstudent.html', student=student)
             

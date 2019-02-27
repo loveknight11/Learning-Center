@@ -42,8 +42,10 @@ def editStudent(id, name, mobile, email, notes, father, mother):
         newMother = session.query(Parents).filter_by(name=mother).first()
         student.parents = []
         session.commit()
-        student.parents.append(newFather)
-        student.parents.append(newMother)
+        if newFather:
+            student.parents.append(newFather)
+        if newMother:
+            student.parents.append(newMother)
 
     student.name = name
     student.mobile = mobile
