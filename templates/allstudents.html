@@ -16,8 +16,10 @@
 					<th scope="col">Notes</th>
 					<th scope="col">Father</th>
 					<th scope="col">Mother</th>
-					<th scope="col"></th>
-					<th scope="col"></th>
+                    {% if current_user.admin == 1 %}
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    {% endif %}
 				</tr>
 			</thead>
 			<tbody id="my-table">
@@ -28,10 +30,24 @@
 						<td>{{student.mobile}}</td>
 						<td>{{student.email}}</td>
 						<td>{{student.notes}}</td>
-						<td>{{student.father}}</td>
-						<td>{{student.mother}}</td>
-						<td><a href="{{url_for('_editStudent', studentId=student.id)}}">Edit</a></td>
-						<td><a href="{{url_for('_deleteStudent', studentId=student.id)}}">Delete</a></td>
+						<td>
+                            {% if student.father and (student.parents.filter_by(sex='Male').first().id == current_user.parent_id or current_user.admin == 1)  %}
+                                <a href="{{ url_for('_editParent', parentId=student.parents.filter_by(sex='Male').first().id) }}">{{ student.father }}</a>
+                            {% else %}
+                                {{ student.father }}
+                            {% endif %}
+                        </td>
+						<td>
+                            {% if student.mother and (student.parents.filter_by(sex='Female').first().id == current_user.parent_id or current_user.admin == 1)  %}
+                                <a href="{{ url_for('_editParent', parentId=student.parents.filter_by(sex='Female').first().id) }}">{{ student.mother }}</a>
+                            {% else %}
+                                {{ student.mother }}
+                            {% endif %}
+                        </td>
+                        {% if current_user.admin == 1 %}
+                            <td><a href="{{url_for('_editStudent', studentId=student.id)}}">Edit</a></td>
+                            <td><a href="{{url_for('_deleteStudent', studentId=student.id)}}">Delete</a></td>
+                        {% endif %}
 					</tr>
 				{% endfor %}
 			</tbody>

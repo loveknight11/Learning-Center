@@ -19,7 +19,9 @@
 					<th scope="col">Notes</th>
 					<th scope="col">Sex</th>
                     <th scope="col"></th>
-					<th scope="col"></th>
+                    {% if current_user.admin == 1 %}
+					    <th scope="col"></th>
+                    {% endif %}
 				</tr>
 			</thead>
 			<tbody id="my-table">

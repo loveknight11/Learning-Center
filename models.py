@@ -38,7 +38,7 @@ class Parents(db.Model):
     email = db.Column(db.String)
     notes = db.Column(db.String)
     sex = db.Column(db.String)
-    students = db.relationship('Students', secondary=parentStudent, lazy='subquery', backref=db.backref('parents', lazy=True))
+    students = db.relationship('Students', secondary=parentStudent, lazy='subquery', backref=db.backref('parents', lazy='dynamic'))
 
 
     @property

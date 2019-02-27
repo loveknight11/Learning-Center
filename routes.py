@@ -34,6 +34,7 @@ def _showStudents():
     if request.method == 'POST':
         name = request.form.get('search')
         student = getStudentByName(name)
+        print(father.name)
         if student:
             return render_template('allstudents.html', students=student)
         else:
