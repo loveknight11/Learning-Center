@@ -34,7 +34,9 @@
 						<td>{{parent.notes}}</td>
 						<td>{{parent.sex}}</td>
                         <td><a href="{{url_for('_editParent', parentId=parent.id)}}">Edit</a></td>
-						<td><a href="{{url_for('_deleteParent', parentId=parent.id)}}">Delete</a></td>
+                        {% if current_user.admin == 1 %}
+						    <td><a href="{{url_for('_deleteParent', parentId=parent.id)}}">Delete</a></td>
+                        {% endif %}
 					</tr>
 				{% endfor %}
 			</tbody>
