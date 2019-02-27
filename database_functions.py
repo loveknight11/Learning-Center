@@ -24,13 +24,14 @@ def addNewStudent(name, mobile, email, notes, father, mother):
             mother = mother)
     session.add(newStudent)
     session.flush()
-
-    f = session.query(Parents).filter_by(name=father).first()
-    m = session.query(Parents).filter_by(name=mother).first()
-    f.students.append(newStudent)
-    m.students.append(newStudent)
-    session.add(f)
-    session.add(m)
+    if father:
+        f = session.query(Parents).filter_by(name=father).first()
+        f.students.append(newStudent)
+        session.add(f)
+    if mother:
+        m = session.query(Parents).filter_by(name=mother).first()
+        m.students.append(newStudent)
+        session.add(m)
     session.commit()
 
 
@@ -173,9 +174,6 @@ def deleteStudentPayments(studentId):
 def deleteStudent(studentId):
     student = session.query(Students).filter_by(id=studentId).one()
     student.parents = []
-    #student.all_grades = []
-    #student.all_notes = []
-    #student.all_payments = []
     session.delete(student)
     session.commit()
 

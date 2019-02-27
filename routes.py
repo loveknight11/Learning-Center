@@ -73,7 +73,7 @@ def _newStudent():
             father = request.form.get('father')
             mother = request.form.get('mother')
             # check for father and mother in database
-            if not checkParent(father):
+            if (not checkParent(father) and father):
                 flash("father is not in our database, please add his info")
                 return render_template('newstudent.html', name=name,
                     mobile=mobile,
@@ -81,7 +81,7 @@ def _newStudent():
                     notes=notes,
                     mother=mother)
 
-            if not checkParent(mother):
+            if (not checkParent(mother) and mother):
                 flash("mother is not in our database, please add her info")
                 return render_template('newstudent.html', name=name,
                     mobile=mobile,
@@ -136,9 +136,6 @@ def _deleteStudent(studentId):
         return render_template('deletestudent.html', student=student)
     else:
         if request.form['submit'] == 'delete':
-            #deleteStudentGrades(studentId)
-            #deleteStudentNotes(studentId)
-            #deleteStudentPayments(studentId)
             deleteStudent(studentId)
             flash('All Student Data deleted')
             students = getAllStudents()
