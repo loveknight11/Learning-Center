@@ -42,8 +42,6 @@ def _showStudents():
             render_template('allstudents.html', students=students)
 
     students = getAllStudents()
-    for student in students:
-        print("name is " + student.name)
     return render_template('allstudents.html', students=students)
 
 # Student Details
@@ -51,15 +49,20 @@ def _showStudents():
 @login_required
 def _studentDetails(studentId):
     student = getStudentById(studentId)
-    grades = getStudentGrades(studentId)
-    notes = getStudentNotes(studentId)
-    payments = getStudentPayments(studentId)
-    return render_template('student.html', student=student, notes=notes, grades=grades, payments=payments)
+    grades = student.all_grades
+    notes = student.all_notes
+    payments = student.all_payments
+    if current_user.parent_id in student.parents or current_user.admin == 1:
+        return render_template('student.html', student=student, notes=notes, grades=grades, payments=payments)
+    else:
+        return "Not allowed to view this page"
 
 # New Student
 @app.route('/students/new', methods=['GET', 'POST'])
 @login_required
 def _newStudent():
+    if not is_admin():
+        return "Not allowed to view this page"
     fathers = getAllFathers()
     mothers = getAllMothers()
     if request.method == 'GET':
@@ -100,6 +103,8 @@ def _newStudent():
 @app.route('/students/<int:studentId>/edit', methods=['GET', 'POST'])
 @login_required
 def _editStudent(studentId):
+    if not is_admin():
+        return "Not allowed to view this page"
     student = getStudentById(studentId)
     if request.method == 'GET':
         return render_template('editstudent.html', student=student)
@@ -131,6 +136,8 @@ def _editStudent(studentId):
 @app.route('/students/<int:studentId>/delete', methods=['GET', 'POST'])
 @login_required
 def _deleteStudent(studentId):
+    if not is_admin():
+        return "Not allowed to view this page"
     student = getStudentById(studentId)
     if request.method == 'GET':
         return render_template('deletestudent.html', student=student)
@@ -147,6 +154,8 @@ def _deleteStudent(studentId):
 @app.route('/students/<int:studentId>/grades/new', methods=['GET', 'POST'])
 @login_required
 def _addStudentGrades(studentId):
+    if not is_admin():
+        return "Not allowed to view this page"
     student = getStudentById(studentId)
     if request.method == 'GET':
         return render_template('newgrade.html', student=student)
@@ -156,12 +165,7 @@ def _addStudentGrades(studentId):
             valdate = datetime.strptime(date, "%Y-%m-%d").date()
             grade = request.form.get('grade')
             notes = request.form.get('notes')
-            newGrade = Grades(student_id= studentId,
-                              grade= grade,
-                              date= valdate,
-                              notes= notes)
-            session.add(newGrade)
-            session.commit()
+            addGrade(studentId, grade, valdate, notes)
             flash('Student Grade Saved')
 
         return redirect(url_for('_studentDetails',studentId= studentId))
@@ -170,6 +174,8 @@ def _addStudentGrades(studentId):
 @app.route('/students/<int:studentId>/grades/<int:gradesId>/edit', methods=['GET', 'POST'])
 @login_required
 def _editStudentGrades(studentId, gradesId):
+    if not is_admin():
+        return "Not allowed to view this page"
     student = getStudentById(studentId)
     grade = getGrade(gradesId)
     if request.method == 'GET':
@@ -181,12 +187,7 @@ def _editStudentGrades(studentId, gradesId):
             valdate = datetime.strptime(date, "%Y-%m-%d").date()
             ggrade = request.form.get('grade')
             notes = request.form.get('notes')
-            grade.student_id = studentId
-            grade.grade= ggrade
-            grade.date= valdate
-            grade.notes= notes
-            session.add(grade)
-            session.commit()
+            editGrade(grade, studentId, ggrade, valdate, notes)
             flash('Student Grade Edited')
 
         return redirect(url_for('_studentDetails', studentId=studentId))
@@ -195,8 +196,9 @@ def _editStudentGrades(studentId, gradesId):
 @app.route('/students/<int:studentId>/grades/<int:gradesId>/delete', methods=['GET', 'POST'])
 @login_required
 def _deleteStudentGrades(studentId, gradesId):
+    if not is_admin():
+        return "Not allowed to view this page"
     student = getStudentById(studentId)
-    grade = getGrade(gradesId)
     if request.method == 'GET':
         return render_template('deletegrade.html', student=student)
     else:
@@ -210,6 +212,8 @@ def _deleteStudentGrades(studentId, gradesId):
 @app.route('/students/<int:studentId>/notes/new', methods=['GET', 'POST'])
 @login_required
 def _addStudentNotes(studentId):
+    if not is_admin():
+        return "Not allowed to view this page"
     student = getStudentById(studentId)
     if request.method == 'GET':
         return render_template('newnote.html', student=student)
@@ -219,12 +223,7 @@ def _addStudentNotes(studentId):
             valdate = datetime.strptime(date, "%Y-%m-%d").date()
             note = request.form.get('note')
             notes = request.form.get('notes')
-            newNote = Notes(student_id= studentId,
-                              note= note,
-                              date= valdate,
-                              notes= notes)
-            session.add(newNote)
-            session.commit()
+            addNote(studentId, note, valdate, notes)
             flash('Student Note Saved')
 
         return redirect(url_for('_studentDetails',studentId= studentId))
@@ -233,6 +232,8 @@ def _addStudentNotes(studentId):
 @app.route('/students/<int:studentId>/notes/<int:notesId>/edit', methods=['GET', 'POST'])
 @login_required
 def _editStudentNotes(studentId, notesId):
+    if not is_admin():
+        return "Not allowed to view this page"
     student = getStudentById(studentId)
     note = getNote(notesId)
     if request.method == 'GET':
@@ -243,12 +244,7 @@ def _editStudentNotes(studentId, notesId):
             valdate = datetime.strptime(date, "%Y-%m-%d").date()
             nnote = request.form.get('note')
             notes = request.form.get('notes')
-            note.student_id = studentId
-            note.grade = nnote
-            note.date = valdate
-            note.notes = notes
-            session.add(note)
-            session.commit()
+            editNote(note, studentId, nnote, valdate, notes)
             flash('Student Note Edited')
 
         return redirect(url_for('_studentDetails', studentId=studentId))
@@ -257,8 +253,9 @@ def _editStudentNotes(studentId, notesId):
 @app.route('/students/<int:studentId>/notes/<int:notesId>/delete', methods=['GET', 'POST'])
 @login_required
 def _deleteStudentNotes(studentId, notesId):
+    if not is_admin():
+        return "Not allowed to view this page"
     student = getStudentById(studentId)
-    note = getNote(notesId)
     if request.method == 'GET':
         return render_template('deletenote.html', student=student)
     else:
@@ -272,6 +269,8 @@ def _deleteStudentNotes(studentId, notesId):
 @app.route('/students/<int:studentId>/payments/new', methods=['GET', 'POST'])
 @login_required
 def _addStudentPayments(studentId):
+    if not is_admin():
+        return "Not allowed to view this page"
     student = getStudentById(studentId)
     if request.method == 'GET':
         return render_template('newpayment.html', student=student)
@@ -281,12 +280,7 @@ def _addStudentPayments(studentId):
             valdate = datetime.strptime(date, "%Y-%m-%d").date()
             payment = request.form.get('payment')
             notes = request.form.get('notes')
-            newPayment = Payments(student_id=studentId,
-                            payment=payment,
-                            date=valdate,
-                            notes=notes)
-            session.add(newPayment)
-            session.commit()
+            addPayment(studentId, payment, valdate, notes)
             flash('Student Payment Saved')
 
         return redirect(url_for('_studentDetails', studentId=studentId))
@@ -295,6 +289,8 @@ def _addStudentPayments(studentId):
 @app.route('/students/<int:studentId>/payments/<int:paymentsId>/edit', methods=['GET', 'POST'])
 @login_required
 def _editStudentPayments(studentId, paymentsId):
+    if not is_admin():
+        return "Not allowed to view this page"
     student = getStudentById(studentId)
     payment = getPayment(paymentsId)
     if request.method == 'GET':
@@ -305,12 +301,7 @@ def _editStudentPayments(studentId, paymentsId):
             valdate = datetime.strptime(date, "%Y-%m-%d").date()
             ppayment = request.form.get('payment')
             notes = request.form.get('notes')
-            payment.student_id = studentId
-            payment.payment = ppayment
-            payment.date = valdate
-            payment.notes = notes
-            session.add(payment)
-            session.commit()
+            editPayment(payment, studentId, ppayment, valdate, notes)
             flash('Student Payment Edited')
 
         return redirect(url_for('_studentDetails', studentId=studentId))
@@ -319,8 +310,9 @@ def _editStudentPayments(studentId, paymentsId):
 @app.route('/students/<int:studentId>/payments/<int:paymentsId>/delete', methods=['GET', 'POST'])
 @login_required
 def _deleteStudentPayments(studentId, paymentsId):
+    if not is_admin():
+        return "Not allowed to view this page"
     student = getStudentById(studentId)
-    payment = getPayment(paymentsId)
     if request.method == 'GET':
         return render_template('deletepayment.html', student=student)
     else:
@@ -334,6 +326,8 @@ def _deleteStudentPayments(studentId, paymentsId):
 @app.route('/parents/new', methods=['GET', 'POST'])
 @login_required
 def _newParent():
+    if not is_admin():
+        return "Not allowed to view this page"
     if request.method == 'GET':
         return render_template('newparent.html')
     else :
@@ -368,8 +362,9 @@ def _newParent():
 @app.route('/parents/<int:parentId>/edit', methods=['GET', 'POST'])
 @login_required
 def _editParent(parentId):
+    if not is_admin() and current_user.parent_id != parentId:
+        return "Not allowed to view this page"
     parent = getParentById(parentId)
-    students = getStudentsForParent(parent.name)
     if request.method == 'GET':
         return render_template('editparent.html', parent=parent)
     else:
@@ -403,6 +398,8 @@ def _editParent(parentId):
 @app.route('/parents/<int:parentId>/delete', methods=['GET', 'POST'])
 @login_required
 def _deleteParent(parentId):
+    if not is_admin():
+        return "Not allowed to view this page"
     parent = getParentById(parentId)
     students = getStudentsForParent(parent.name)
     if request.method == 'GET':
@@ -479,6 +476,8 @@ def getParentsJson():
 @app.route('/fathers/json')
 @login_required
 def getFathersJson():
+    if not is_admin():
+        return "Not allowed to view this page"
     fathers = getAllFathers()
     return jsonify([father.serialize for father in fathers])
 
@@ -486,6 +485,8 @@ def getFathersJson():
 @app.route('/mothers/json')
 @login_required
 def getMothersJson():
+    if not is_admin():
+        return "Not allowed to view this page"
     mothers = getAllMothers()
     return jsonify([mother.serialize for mother in mothers])
 
@@ -493,9 +494,17 @@ def getMothersJson():
 @app.route('/students/json')
 @login_required
 def getStudentsJson():
+    if not is_admin():
+        return "Not allowed to view this page"
     students = getAllStudents()
     return jsonify([student.serialize for student in students])
 
+
+def is_admin():
+    if current_user.admin == 1:
+        return True
+    else:
+        return False
 
 if __name__ == '__main__':
     app.debug = True

@@ -104,7 +104,10 @@ def addNewParent(name, sex, mobile, address, job, email, notes, username, passwo
 
 
 def getAllParents():
-    return session.query(Parents).all()
+    if current_user.admin == 1:
+        return session.query(Parents).all()
+    else:
+        return session.query(Parents).filter_by(id = current_user.parent_id).all()
 
 
 def getAllFathers():
@@ -231,4 +234,57 @@ def editStudentParentName(oldParentName, newParentName):
         student.father = newParentName
     for student in studentsForMother:
         student.mother = newParentName
+    session.commit()
+
+
+def addGrade(studentId, grade, valdate, notes):
+    newGrade = Grades(student_id=studentId,
+                      grade=grade,
+                      date=valdate,
+                      notes=notes)
+    session.add(newGrade)
+    session.commit()
+
+def editGrade(grade, studentId, ggrade, valdate, notes):
+    grade.student_id = studentId
+    grade.grade = ggrade
+    grade.date = valdate
+    grade.notes = notes
+    session.add(grade)
+    session.commit()
+
+
+def addNote(studentId, note, valdate, notes):
+    newNote = Notes(student_id=studentId,
+                    note=note,
+                    date=valdate,
+                    notes=notes)
+    session.add(newNote)
+    session.commit()
+
+
+def editNote(note, studentId, nnote, valdate, notes):
+    note.student_id = studentId
+    note.grade = nnote
+    note.date = valdate
+    note.notes = notes
+    session.add(note)
+    session.commit()
+
+
+def addPayment(studentId, payment, valdate, notes):
+    newPayment = Payments(student_id=studentId,
+                          payment=payment,
+                          date=valdate,
+                          notes=notes)
+    session.add(newPayment)
+    session.commit()
+
+
+def editPayment(payment, studentId, ppayment, valdate, notes):
+    payment.student_id = studentId
+    payment.payment = ppayment
+    payment.date = valdate
+    payment.notes = notes
+    session.add(payment)
     session.commit()
