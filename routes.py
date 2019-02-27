@@ -34,7 +34,6 @@ def _showStudents():
     if request.method == 'POST':
         name = request.form.get('search')
         student = getStudentByName(name)
-        print(father.name)
         if student:
             return render_template('allstudents.html', students=student)
         else:
@@ -53,7 +52,8 @@ def _studentDetails(studentId):
     grades = student.all_grades
     notes = student.all_notes
     payments = student.all_payments
-    if current_user.parent_id in student.parents or current_user.admin == 1:
+    parent = getParentById(current_user.parent_id)
+    if parent in student.parents or current_user.admin == 1:
         return render_template('student.html', student=student, notes=notes, grades=grades, payments=payments)
     else:
         return "Not allowed to view this page"
