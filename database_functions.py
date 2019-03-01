@@ -295,3 +295,10 @@ def editUsername(userId, newUsername):
     user.username = newUsername
     session.add(user)
     session.commit()
+
+
+def editPassword(userId, newPassword):
+    user = session.query(Users).filter_by(id=userId).first()
+    user.set_password(newPassword)
+    session.add(user)
+    session.commit()

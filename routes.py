@@ -489,10 +489,31 @@ def _changeUsername():
     return render_template('changeusername.html', username=current_user.username)
 
 
-@app.route('/password/change')
+@app.route('/password/change', methods=['GET', 'POST'])
 @login_required
 def _changePassword():
-    return "Change Password"
+    if request.method == 'POST':
+        if request.form['submit'] == 'save':
+            current = request.form.get('current')
+            new = request.form.get('new')
+            re = request.form.get('re')
+            if new == re:
+                if current_user.check_password(current):
+                    editPassword(current_user.parent_id, new)
+                    _logout()
+                    flash('Password Changed, Login with new password')
+                    return redirect(url_for('_login'))
+                else:
+                    flash('Wrong Current Password')
+                    return redirect(url_for('_changePassword'))
+            else:
+                flash('passwords donot match')
+                return redirect(url_for('_changePassword'))
+        else:
+            return redirect(url_for('_showIndex'))
+
+
+    return render_template('changepassword.html')
 
 
 @app.route('/parents/json')
