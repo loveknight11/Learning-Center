@@ -288,3 +288,10 @@ def editPayment(payment, studentId, ppayment, valdate, notes):
     payment.notes = notes
     session.add(payment)
     session.commit()
+
+
+def editUsername(userId, newUsername):
+    user = session.query(Users).filter_by(id=userId).first()
+    user.username = newUsername
+    session.add(user)
+    session.commit()

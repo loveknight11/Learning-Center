@@ -466,6 +466,35 @@ def _logout():
     return render_template('index.html')
 
 
+@app.route('/username/change', methods=['GET', 'POST'])
+@login_required
+def _changeUsername():
+    if request.method == 'POST':
+        if request.form['submit'] == 'save':
+            newUsername = request.form.get('new')
+            if not newUsername or newUsername == current_user.username:
+                flash('Username not Change')
+                return redirect(url_for('_showIndex'))
+            else:
+                if checkUsernameAvailable(newUsername):
+                    editUsername(current_user.parent_id, newUsername)
+                    _logout()
+                    flash('Username Changed, Login with new username')
+                    return redirect(url_for('_login'))
+                else:
+                    flash('Username is not valid')
+                    return redirect(url_for('_changeUsername'))
+        else:
+            return redirect(url_for('_showIndex'))
+    return render_template('changeusername.html', username=current_user.username)
+
+
+@app.route('/password/change')
+@login_required
+def _changePassword():
+    return "Change Password"
+
+
 @app.route('/parents/json')
 @login_required
 def getParentsJson():

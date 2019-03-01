@@ -41,6 +41,8 @@
           {% if current_user.admin == 1 %}
             <a class="dropdown-item" href="{{url_for('_newParent')}}">Add Parent</a>
           {% endif %}
+          <a class="dropdown-item" href="{{url_for('_changeUsername')}}">Change Username</a>
+          <a class="dropdown-item" href="{{url_for('_changePassword')}}">Change Password</a>
         </div>
       </li>
     </ul>

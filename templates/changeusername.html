@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+{% include "header.html" %}
+
+{% block content %}
+
+
+	<div class="input-form">
+		<form method="post">
+			<div class="form-group">
+				<label for="current">Current Username</label>
+				<input class="form-control" type="text" name="current" id="current" value="{{ username }}">
+			</div>
+            <div class="form-group">
+				<label for="current">New Username</label>
+				<input class="form-control" type="text" name="new" id="new">
+			</div>
+			<button type="submit" class="btn btn-primary" name="submit" value="save">Save</button>
+			<button type="submit" class="btn btn-secondary" name="submit" value="cancel">Cancel</button>
+		</form>
+	</div>
+{% endblock %}
