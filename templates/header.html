@@ -1,4 +1,4 @@
-<header class="header">
+
   <img class="header-img" src="{{url_for('static', filename='img/header.jpg')}}">
   {% if current_user.is_anonymous %}
       <a href="{{ url_for('_login') }}">
@@ -10,8 +10,8 @@
       </a>
   {% endif %}
 	<!-- Menu -->
-	<nav class="navbar navbar-expand-lg navbar-light menu">
-  <a class="navbar-brand text-white" href="{{url_for('_getCV')}}">Mr. Abdulhady</a>
+	<nav class="navbar navbar-expand-sm navbar-fixed-top navbar-light menu">
+  <a class="navbar-brand text-color" href="{{url_for('_getCV')}}">Mr. Abdulhady</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -66,4 +66,3 @@
       {% endif %}
     {% endwith %}
   </div>
-</header>

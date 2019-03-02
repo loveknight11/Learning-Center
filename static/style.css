@@ -1,37 +1,39 @@
-.header{
+/*.header{
+	display: block;
 	position: relative;
 	text-align: center;
 }
 
+.menu{
+	left:10px;
+	position: absolute;
+  	top: 2px;
+}
+*/
 .header-img{
 	width: 100%;
 	position: relative;
 }
 
-.menu{
-  position: absolute;
-  bottom: 8px;
-}
-
 
 .navbar-light .navbar-nav .nav-link {
-    color: white;
+    color: deepskyblue;
 }
 
 .navbar-light .navbar-nav .active>.nav-link, .navbar-light .navbar-nav .nav-link.active, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .show>.nav-link {
-    color: white;
+    color: deepskyblue;
 }
 
 body{
 	background-color:#e2edff;
 }
 
-.text-white{
-	color: white;
+.text-color{
+	color: deepskyblue;
 }
 
 .input-form{
-	width: 500px;
+	width: 75%;
 	text-align: center;
 	margin: auto;
 	padding-top: 40px;
@@ -46,7 +48,7 @@ body{
 }
 
 .login-img{
-	height: 50%;
+	width:30%;
     position: absolute;
     top: 10px;
     right: 10px;
