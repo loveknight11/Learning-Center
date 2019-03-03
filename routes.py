@@ -18,6 +18,9 @@ login = LoginManager(app)
 login.login_view = '_login'
 
 from database_functions import *
+
+inserAdminUser()
+
 @login.user_loader
 def load_user(id):
     return Users.query.get(int(id))

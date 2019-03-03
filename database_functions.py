@@ -302,3 +302,13 @@ def editPassword(userId, newPassword):
     user.set_password(newPassword)
     session.add(user)
     session.commit()
+
+
+def inserAdminUser():
+    user = Users(username='admin', admin=1)
+    user.set_password('123654')
+
+    admin = session.query(Users).filter_by(username='admin').first()
+    if not admin:
+        session.add(user)
+        session.commit()
