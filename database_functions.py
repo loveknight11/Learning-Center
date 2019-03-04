@@ -147,7 +147,6 @@ def getParentByName(name):
 
 def getUserByUsername(username):
     user = session.query(Users).filter_by(username=username).first()
-    print(user.username)
     return user
 
 
