@@ -19,7 +19,7 @@ login.login_view = '_login'
 
 from database_functions import *
 
-inserAdminUser()
+
 
 @login.user_loader
 def load_user(id):
@@ -456,7 +456,7 @@ def _login():
             return render_template('login.html')
         else:
             flash('Welcome ' + user.username)
-            login_user(user)
+            login_user(user, True)
             next_page = request.args.get('next')
             if not next_page or url_parse(next_page).netloc != '':
                 next_page = url_for('_showIndex')
@@ -563,4 +563,5 @@ def is_admin():
 if __name__ == '__main__':
     #app.debug = True
     #app.run(host='0.0.0.0', port='5000')
+    insertAdminUser()
     app.run()

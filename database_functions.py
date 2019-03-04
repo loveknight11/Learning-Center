@@ -1,5 +1,5 @@
 from config import Config
-from sqlalchemy import *
+#from sqlalchemy import *
 from routes import current_user, db
 from models import Users, Parents, Notes, Payments, Grades, Students
 
@@ -304,7 +304,7 @@ def editPassword(userId, newPassword):
     session.commit()
 
 
-def inserAdminUser():
+def insertAdminUser():
     user = Users(username='admin', admin=1)
     user.set_password('123654')
 
