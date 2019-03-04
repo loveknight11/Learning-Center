@@ -448,7 +448,7 @@ def _login():
             return render_template('index.html')
         return render_template('login.html')
     else:
-        username = request.form.get('username')
+        username = request.form.get('username').lower()
         password = request.form.get('password')
         user = getUserByUsername(username)
         if user is None or not user.check_password(password=password):
@@ -474,7 +474,7 @@ def _logout():
 def _changeUsername():
     if request.method == 'POST':
         if request.form['submit'] == 'save':
-            newUsername = request.form.get('new')
+            newUsername = request.form.get('new').lower()
             if not newUsername or newUsername == current_user.username:
                 flash('Username not Change')
                 return redirect(url_for('_showIndex'))
