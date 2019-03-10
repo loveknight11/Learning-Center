@@ -106,3 +106,9 @@ class Payments(db.Model):
     payment = db.Column(db.String)
     date = db.Column(db.DateTime, default=datetime.datetime.now)
     notes = db.Column(db.String)
+
+
+class Courses(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    notes = db.Column(db.String)
