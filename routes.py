@@ -436,6 +436,30 @@ def _showAllParents():
     parents = getAllParents()
     return render_template('allparents.html', parents = parents)
 
+
+@app.route('/courses/new', methods=['GET', 'POST'])
+@login_required
+def _addCourse():
+    if request.method == 'POST':
+        if request.form['submit'] == 'save':
+            name = request.form.get('course')
+            notes = request.form.get('notes')
+            addCourse(name=name, notes=notes)
+
+        return redirect(url_for('_allCourses'))
+
+    if is_admin():
+        return render_template('newcourse.html')
+    else:
+        return 'Not Allowed'
+
+@app.route('/courses')
+@login_required
+def _allCourses():
+    courses = getAllCourses()
+    return render_template('allcourses.html', courses=courses)
+
+
 @app.route('/cv')
 def _getCV():
     return render_template('cv.html')
@@ -552,6 +576,13 @@ def getStudentsJson():
         return "Not allowed to view this page"
     students = getAllStudents()
     return jsonify([student.serialize for student in students])
+
+
+@app.route('/courses/json')
+@login_required
+def getCoursesJson():
+    courses = getAllCourses()
+    return jsonify([course.serialize for course in courses])
 
 
 def is_admin():

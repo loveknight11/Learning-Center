@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+{% include "header.html" %}
+
+{% block content %}
+
+    <h3>Add New Course</h3>
+	<div class="input-form">
+		<form method="post">
+			<div class="form-group">
+				<label for="course">Course Name</label>
+				<input class="form-control" type="text" name="course" id="course" value="">
+			</div>
+			<div class="form-group">
+				<label for="notes">Notes</label>
+				<textarea class="form-control" name="notes" id="notes" rows="3"></textarea>
+			</div>
+			<button type="submit" class="btn btn-primary" name="submit" value="save">Save</button>
+			<button type="submit" class="btn btn-secondary" name="submit" value="cancel">Cancel</button>
+		</form>
+	</div>
+{% endblock %}

@@ -1,7 +1,7 @@
 from config import Config
 #from sqlalchemy import *
 from routes import current_user, db
-from models import Users, Parents, Notes, Payments, Grades, Students
+from models import Users, Parents, Notes, Payments, Grades, Students, Courses
 
 
 
@@ -311,3 +311,13 @@ def insertAdminUser():
     if not admin:
         session.add(user)
         session.commit()
+
+
+def addCourse(name, notes):
+    course = Courses(name=name, notes=notes)
+    session.add(course)
+    session.commit()
+
+
+def getAllCourses():
+    return session.query(Courses).all()

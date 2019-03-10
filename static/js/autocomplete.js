@@ -84,3 +84,25 @@ function studentsAutocomplete(field){
           }
         } );
 }
+
+
+//courses ajax request
+function coursesAutocomplete(field){
+    $.ajax( {
+          url: "/courses/json",
+          dataType: "json",
+          success: function( data ) {
+            var options = {
+              data: data,
+              getValue: "name",
+              list: {
+                match: {
+                    enabled: true
+                }
+            },
+            theme: "plate-dark"
+            };
+            $(field).easyAutocomplete(options);
+          }
+        } );
+}
