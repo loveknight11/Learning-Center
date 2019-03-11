@@ -105,4 +105,28 @@ function coursesAutocomplete(field){
             $(field).easyAutocomplete(options);
           }
         } );
+
+}
+
+
+//locations ajax request
+function locationsAutocomplete(field){
+    $.ajax( {
+          url: "/locations/json",
+          dataType: "json",
+          success: function( data ) {
+            var options = {
+              data: data,
+              getValue: "name",
+              list: {
+                match: {
+                    enabled: true
+                }
+            },
+            theme: "plate-dark"
+            };
+            $(field).easyAutocomplete(options);
+          }
+        } );
+
 }

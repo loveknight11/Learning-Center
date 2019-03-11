@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+{% include "header.html" %}
+
+{% block content %}
+
+<h3>Edit Location</h3>
+	<div class="input-form">
+		<form method="post">
+			<div class="form-group">
+				<label for="name">Location Name</label>
+				<input class="form-control" type="text" name="location" id="location" value="{{ location.name }}">
+			</div>
+			<div class="form-group">
+				<label for="notes">Notes</label>
+				<textarea class="form-control" name="notes" id="notes" rows="3">{{ location.notes }}</textarea>
+			</div>
+			<button type="submit" class="btn btn-primary" name="submit" value="save">Edit</button>
+			<button type="submit" class="btn btn-secondary" name="submit" value="cancel">Cancel</button>
+		</form>
+	</div>
+{% endblock %}

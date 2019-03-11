@@ -463,6 +463,8 @@ def _allCourses():
 @app.route('/courses/<int:courseId>/edit', methods=['GET', 'POST'])
 @login_required
 def _editCourse(courseId):
+    if not is_admin():
+        return "Not Allowed"
     course = getCourseById(courseId)
     if request.method == 'POST':
         if request.form['submit'] == 'save':
@@ -474,6 +476,45 @@ def _editCourse(courseId):
 
     return render_template('editcourse.html', course=course)
 
+
+@app.route('/locations/new', methods=['GET', 'POST'])
+@login_required
+def _addLocation():
+    if not is_admin():
+        return "Not allowed"
+    if request.method == 'POST':
+        if request.form['submit'] == 'save':
+            loc = request.form.get('location')
+            notes = request.form.get('notes')
+            addLocation(name=loc, notes=notes)
+
+        return redirect(url_for('_allLocations'))
+
+    return render_template('newlocation.html')
+
+
+@app.route('/locations/<int:locationId>/edit', methods=['GET', 'POST'])
+@login_required
+def _editLocation(locationId):
+    if not is_admin():
+        return "Not Allowed"
+    location = getLocationById(locationId)
+    if request.method == 'POST':
+        if request.form['submit'] == 'save':
+            location.name = request.form.get('location')
+            location.notes = request.form.get('notes')
+            editLocation(location)
+
+        return redirect(url_for('_allLocations'))
+
+    return render_template('editlocation.html', location=location)
+
+
+@app.route('/locations')
+@login_required
+def _allLocations():
+    locations = getAllLocations()
+    return render_template('allLocations.html', locations=locations)
 
 
 @app.route('/cv')
@@ -599,6 +640,13 @@ def getStudentsJson():
 def getCoursesJson():
     courses = getAllCourses()
     return jsonify([course.serialize for course in courses])
+
+
+@app.route('/locations/json')
+@login_required
+def getLocationsJson():
+    locations = getAllLocations()
+    return jsonify([location.serialize for location in locations])
 
 
 def is_admin():

@@ -129,6 +129,14 @@ class Locations(db.Model):
     notes = db.Column(db.String)
     course = db.relationship('CourseDetails', backref = 'locations', lazy = True)
 
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'notes': self.notes
+        }
+
 
 reservations = db.Table('reservations',
                         db.Column('student_id', db.Integer, db.ForeignKey('students.id'), primary_key=True),

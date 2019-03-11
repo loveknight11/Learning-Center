@@ -1,0 +1,54 @@
+{% extends "main.html" %}
+{% include "header.html" %}
+
+{% block content %}
+    <form class="form-inline my-2 my-lg-0" method="POST">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" id="search" onkeyup="filterTable()">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+	<div class="table-responsive">
+		<table class="table table-striped table-hover table-bordered">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">ID</th>
+					<th scope="col">Name</th>
+					<th scope="col">Notes</th>
+                    {% if current_user.admin == 1 %}
+                        <th></th>
+                    {% endif %}
+				</tr>
+			</thead>
+			<tbody id="my-table">
+				{% for location in locations %}
+					<tr>
+						<th scope="row">{{location.id}}</th>
+						<td>{{location.name}}</td>
+						<td>{{location.notes}}</td>
+                        {% if current_user.admin == 1 %}
+                            <td><a href="{{ url_for('_editLocation', locationId=location.id) }}">Edit</a></td>
+                        {% endif %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.2/js/bootstrap.js"></script>
+	<script type="text/javascript" src="{{url_for('static', filename='js/jquery.easy-autocomplete.min.js')}}"></script>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/easy-autocomplete.min.css')}}">
+	<script type="text/javascript" src="{{url_for('static', filename='js/autocomplete.js')}}"></script>
+	<script type="text/javascript">
+		locationsAutocomplete('#search');
+	</script>
+	<script>
+	function filterTable(){
+		var value = $("#search").val().toLowerCase();
+    $("#my-table tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+	}
+	</script>
+
+{% endblock %}

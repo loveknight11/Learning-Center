@@ -1,7 +1,7 @@
 from config import Config
 #from sqlalchemy import *
 from routes import current_user, db
-from models import Users, Parents, Notes, Payments, Grades, Students, Courses
+from models import Users, Parents, Notes, Payments, Grades, Students, Courses, Locations, CourseDetails
 
 
 
@@ -328,3 +328,20 @@ def getCourseById(id):
 def editCourse(course):
     session.add(course)
     session.commit()
+
+def addLocation(name, notes):
+    location = Locations(name=name,
+                         notes=notes )
+    session.add(location)
+    session.commit()
+
+
+def getAllLocations():
+    return session.query(Locations).all()
+
+def editLocation(location):
+    session.add(location)
+    session.commit()
+
+def getLocationById(id):
+    return session.query(Locations).filter_by(id=id).first()
