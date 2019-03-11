@@ -112,6 +112,7 @@ class Courses(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     notes = db.Column(db.String)
+    details = db.relationship('CourseDetails', backref = 'courses', lazy = True)
 
     @property
     def serialize(self):
@@ -120,3 +121,30 @@ class Courses(db.Model):
             'name': self.name,
             'notes': self.notes
         }
+
+
+class Locations(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    notes = db.Column(db.String)
+    course = db.relationship('CourseDetails', backref = 'locations', lazy = True)
+
+
+reservations = db.Table('reservations',
+                        db.Column('student_id', db.Integer, db.ForeignKey('students.id'), primary_key=True),
+                        db.Column('details_id', db.Integer, db.ForeignKey('courseDetails.id'), primary_key=True)
+                        )
+
+class CourseDetails(db.Model):
+    __tablename__ = 'courseDetails'
+    id = db.Column(db.Integer, primary_key=True)
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'))
+    locations_id = db.Column(db.Integer, db.ForeignKey('locations.id'))
+    start_date = db.Column(db.DateTime)
+    end_date = db.Column(db.DateTime)
+    start_time = db.Column(db.Time)
+    end_time = db.Column(db.Time)
+    students = db.relationship('Students', secondary=reservations, lazy='subquery',
+                               backref=db.backref('courses', lazy='dynamic'))
+
+
