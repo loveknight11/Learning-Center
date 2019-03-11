@@ -321,3 +321,10 @@ def addCourse(name, notes):
 
 def getAllCourses():
     return session.query(Courses).all()
+
+def getCourseById(id):
+    return session.query(Courses).filter_by(id=id).first()
+
+def editCourse(course):
+    session.add(course)
+    session.commit()

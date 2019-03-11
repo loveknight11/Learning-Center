@@ -460,6 +460,22 @@ def _allCourses():
     return render_template('allcourses.html', courses=courses)
 
 
+@app.route('/courses/<int:courseId>/edit', methods=['GET', 'POST'])
+@login_required
+def _editCourse(courseId):
+    course = getCourseById(courseId)
+    if request.method == 'POST':
+        if request.form['submit'] == 'save':
+            course.name = request.form.get('course')
+            course.notes = request.form.get('notes')
+            editCourse(course)
+
+        return redirect(url_for('_allCourses'))
+
+    return render_template('editcourse.html', course=course)
+
+
+
 @app.route('/cv')
 def _getCV():
     return render_template('cv.html')
